@@ -35,14 +35,24 @@ body, html {
   height: 100%;
 }
 
-/* Orbital rings at bottom */
+/* Signup area wrapper (positions orbits behind the form) */
+.signup-area {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 48px;
+}
+
+/* Orbital rings behind signup */
 .orbits {
   position: absolute;
-  bottom: 8%;
+  top: 70%;
   left: 50%;
-  transform: translateX(-50%);
-  width: min(500px, 75vw);
+  transform: translate(-50%, -50%);
+  width: min(680px, 95vw);
   pointer-events: none;
+  z-index: 0;
   opacity: 0;
   animation: fadeInSvg 2s ease 1s forwards;
 }
@@ -198,7 +208,7 @@ body, html {
   color: #888;
   text-decoration: none;
   letter-spacing: 0.05em;
-  margin-top: 48px;
+  margin-top: 80px;
   padding-bottom: 2px;
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s ease, color 0.3s ease;
@@ -213,6 +223,8 @@ body, html {
 
 /* Signup form */
 .signup-form {
+  position: relative;
+  z-index: 1;
   margin-top: 36px;
   opacity: 0;
   animation: fadeUp 1s ease 1.6s forwards;
@@ -282,6 +294,8 @@ body, html {
 }
 
 .signup-thanks {
+  position: relative;
+  z-index: 1;
   margin-top: 36px;
   font-size: 0.95rem;
   color: #5a9e6f;

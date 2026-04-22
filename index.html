@@ -26,15 +26,6 @@
   </div>
 
   <main class="center-content">
-    <!-- Orbital accents at bottom -->
-    <div class="orbits" aria-hidden="true">
-      <svg viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
-        <ellipse class="orbit orbit-1" cx="300" cy="100" rx="280" ry="70" stroke="#14171a" stroke-width="0.5" fill="none" opacity="0.12"/>
-        <ellipse class="orbit orbit-2" cx="300" cy="100" rx="240" ry="55" stroke="#14171a" stroke-width="0.5" fill="none" opacity="0.08" transform="rotate(8 300 100)"/>
-        <ellipse class="orbit orbit-3" cx="300" cy="100" rx="200" ry="40" stroke="#14171a" stroke-width="0.5" fill="none" opacity="0.06" transform="rotate(-5 300 100)"/>
-      </svg>
-    </div>
-
     <!-- Growing flower -->
     <div class="flower-wrap" aria-hidden="true">
       <svg class="flower-svg" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,14 +54,25 @@
     <div class="logo">iter8</div>
     <h1 class="message">coming soon...</h1>
 
-    <form id="signup-form" class="signup-form" onsubmit="return handleSignup(event)">
-      <p class="signup-label">stay in the loop</p>
-      <div class="signup-input-row">
-        <input type="email" id="signup-email" placeholder="your@email.com" required autocomplete="email" />
-        <button type="submit" id="signup-btn">notify me</button>
+    <!-- Signup area with orbital loops behind it -->
+    <div class="signup-area">
+      <div class="orbits" aria-hidden="true">
+        <svg viewBox="0 0 600 200" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+          <ellipse class="orbit orbit-1" cx="300" cy="100" rx="280" ry="70" stroke="#14171a" stroke-width="0.5" fill="none" opacity="0.12"/>
+          <ellipse class="orbit orbit-2" cx="300" cy="100" rx="240" ry="55" stroke="#14171a" stroke-width="0.5" fill="none" opacity="0.08" transform="rotate(8 300 100)"/>
+          <ellipse class="orbit orbit-3" cx="300" cy="100" rx="200" ry="40" stroke="#14171a" stroke-width="0.5" fill="none" opacity="0.06" transform="rotate(-5 300 100)"/>
+        </svg>
       </div>
-    </form>
-    <p id="signup-thanks" class="signup-thanks" hidden>we'll keep you posted ✓</p>
+
+      <form id="signup-form" class="signup-form" onsubmit="return handleSignup(event)">
+        <p class="signup-label">stay in the loop</p>
+        <div class="signup-input-row">
+          <input type="email" id="signup-email" placeholder="your@email.com" required autocomplete="email" />
+          <button type="submit" id="signup-btn">notify me</button>
+        </div>
+      </form>
+      <p id="signup-thanks" class="signup-thanks" hidden>we'll keep you posted ✓</p>
+    </div>
 
     <a href="mailto:info@iter8.se" class="contact-link">info@iter8.se</a>
   </main>
