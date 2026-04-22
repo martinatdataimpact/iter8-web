@@ -92,7 +92,7 @@ body, html {
 
 @keyframes leafAppear {
   from { opacity: 0; }
-  to { opacity: 0.2; }
+  to { opacity: 0.5; }
 }
 
 .petal {
@@ -110,7 +110,7 @@ body, html {
 
 @keyframes petalBloom {
   from { opacity: 0; }
-  to { opacity: 0.08; }
+  to { opacity: 0.55; }
 }
 
 .flower-center {
@@ -120,7 +120,7 @@ body, html {
 
 @keyframes centerAppear {
   from { opacity: 0; }
-  to { opacity: 0.15; }
+  to { opacity: 0.7; }
 }
 
 /* Main content */
