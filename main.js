@@ -44,3 +44,29 @@ function animateFluid() {
 
 // Start moving SVG animation
 animateFluid();
+
+// Email signup handler
+function handleSignup(e) {
+  e.preventDefault();
+  const email = document.getElementById('signup-email').value.trim();
+  if (!email) return false;
+
+  // Send as GA event (captures email in Analytics)
+  if (typeof gtag === 'function') {
+    gtag('event', 'signup', {
+      event_category: 'engagement',
+      event_label: email
+    });
+  }
+
+  // Also keep in localStorage as backup
+  const signups = JSON.parse(localStorage.getItem('iter8_signups') || '[]');
+  signups.push({ email, ts: new Date().toISOString() });
+  localStorage.setItem('iter8_signups', JSON.stringify(signups));
+
+  // Show confirmation, hide form
+  document.getElementById('signup-form').hidden = true;
+  document.getElementById('signup-thanks').hidden = false;
+
+  return false;
+}

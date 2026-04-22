@@ -62,6 +62,16 @@
 
     <div class="logo">iter8</div>
     <h1 class="message">coming soon...</h1>
+
+    <form id="signup-form" class="signup-form" onsubmit="return handleSignup(event)">
+      <p class="signup-label">stay in the loop</p>
+      <div class="signup-input-row">
+        <input type="email" id="signup-email" placeholder="your@email.com" required autocomplete="email" />
+        <button type="submit" id="signup-btn">notify me</button>
+      </div>
+    </form>
+    <p id="signup-thanks" class="signup-thanks" hidden>we'll keep you posted ✓</p>
+
     <a href="mailto:info@iter8.se" class="contact-link">info@iter8.se</a>
   </main>
 
