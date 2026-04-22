@@ -51,18 +51,11 @@ function handleSignup(e) {
   const email = document.getElementById('signup-email').value.trim();
   if (!email) return false;
 
-  // Send as GA event (captures email in Analytics)
-  if (typeof gtag === 'function') {
-    gtag('event', 'signup', {
-      event_category: 'engagement',
-      event_label: email
-    });
-  }
-
-  // Also keep in localStorage as backup
-  const signups = JSON.parse(localStorage.getItem('iter8_signups') || '[]');
-  signups.push({ email, ts: new Date().toISOString() });
-  localStorage.setItem('iter8_signups', JSON.stringify(signups));
+  // Send to Google Sheets
+  fetch('https://script.google.com/macros/s/AKfycbx6OuZpeCFDUPBGqIYXpw9_AOE9OliaoWi35ci3EiNxlDCkoJ1ErmhZujVb9K-83TQo/exec', {
+    method: 'POST',
+    body: JSON.stringify({ email }),
+  }).catch(() => {});
 
   // Show confirmation, hide form
   document.getElementById('signup-form').hidden = true;
