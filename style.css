@@ -75,9 +75,9 @@ body, html {
 
 .stem {
   stroke: #bbb;
-  stroke-dasharray: 200;
-  stroke-dashoffset: 200;
-  animation: growStem 2.5s ease 0.3s forwards, stemColor 1.5s ease 2s forwards;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  animation: growStem 2s ease 0.3s forwards, stemColor 1.5s ease 1.8s forwards;
 }
 
 @keyframes growStem {
@@ -93,9 +93,8 @@ body, html {
   opacity: 0;
   animation: leafAppear 0.8s ease forwards, leafColor 1.2s ease forwards;
 }
-.leaf-l { animation-delay: 1.4s, 2.0s; }
-.leaf-r { animation-delay: 1.7s, 2.2s; }
-.leaf-t { animation-delay: 2.0s, 2.6s; }
+.leaf-l { animation-delay: 1.2s, 1.8s; }
+.leaf-r { animation-delay: 1.5s, 2.0s; }
 
 @keyframes leafAppear {
   from { opacity: 0; }
@@ -129,10 +128,8 @@ body, html {
   to { fill: var(--petal-color); }
 }
 
-.p1, .p5 { --petal-color: #e8a0b4; }
-.p2, .p6 { --petal-color: #dba0c7; }
-.p3, .p7 { --petal-color: #eaa8b8; }
-.p4, .p8 { --petal-color: #d9a0c5; }
+.p1, .p3, .p5, .p7 { --petal-color: #e8a0b4; }
+.p2, .p4, .p6, .p8 { --petal-color: #dba0c7; }
 
 .flower-center {
   fill: #ccc;
