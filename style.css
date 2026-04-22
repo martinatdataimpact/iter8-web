@@ -74,53 +74,76 @@ body, html {
 }
 
 .stem {
+  stroke: #bbb;
   stroke-dasharray: 120;
   stroke-dashoffset: 120;
-  animation: growStem 2s ease 0.3s forwards;
+  animation: growStem 2s ease 0.3s forwards, stemColor 1.5s ease 1.8s forwards;
 }
 
 @keyframes growStem {
   to { stroke-dashoffset: 0; }
 }
 
-.leaf {
-  opacity: 0;
-  animation: leafAppear 0.8s ease forwards;
+@keyframes stemColor {
+  to { stroke: #4a7c59; }
 }
-.leaf-l { animation-delay: 1.2s; }
-.leaf-r { animation-delay: 1.5s; }
+
+.leaf {
+  fill: #ccc;
+  opacity: 0;
+  animation: leafAppear 0.8s ease forwards, leafColor 1.2s ease forwards;
+}
+.leaf-l { animation-delay: 1.2s, 1.8s; }
+.leaf-r { animation-delay: 1.5s, 2.0s; }
 
 @keyframes leafAppear {
   from { opacity: 0; }
   to { opacity: 0.5; }
 }
 
-.petal {
-  opacity: 0;
-  animation: petalBloom 0.8s ease forwards;
+@keyframes leafColor {
+  to { fill: #5a9e6f; }
 }
-.p1 { animation-delay: 1.8s; }
-.p2 { animation-delay: 1.9s; }
-.p3 { animation-delay: 2.0s; }
-.p4 { animation-delay: 2.1s; }
-.p5 { animation-delay: 2.2s; }
-.p6 { animation-delay: 2.3s; }
-.p7 { animation-delay: 2.4s; }
-.p8 { animation-delay: 2.5s; }
+
+.petal {
+  fill: #ccc;
+  opacity: 0;
+  animation: petalBloom 0.8s ease forwards, petalColor 1.2s ease forwards;
+}
+.p1 { animation-delay: 1.8s, 2.4s; }
+.p2 { animation-delay: 1.9s, 2.5s; }
+.p3 { animation-delay: 2.0s, 2.6s; }
+.p4 { animation-delay: 2.1s, 2.7s; }
+.p5 { animation-delay: 2.2s, 2.8s; }
+.p6 { animation-delay: 2.3s, 2.9s; }
+.p7 { animation-delay: 2.4s, 3.0s; }
+.p8 { animation-delay: 2.5s, 3.1s; }
 
 @keyframes petalBloom {
   from { opacity: 0; }
   to { opacity: 0.55; }
 }
 
+@keyframes petalColor {
+  to { fill: var(--petal-color); }
+}
+
+.p1, .p3, .p5, .p7 { --petal-color: #e8a0b4; }
+.p2, .p4, .p6, .p8 { --petal-color: #dba0c7; }
+
 .flower-center {
+  fill: #ccc;
   opacity: 0;
-  animation: centerAppear 0.6s ease 2.6s forwards;
+  animation: centerAppear 0.6s ease 2.6s forwards, centerColor 1s ease 3.2s forwards;
 }
 
 @keyframes centerAppear {
   from { opacity: 0; }
   to { opacity: 0.7; }
+}
+
+@keyframes centerColor {
+  to { fill: #f0c75e; }
 }
 
 /* Main content */
