@@ -13,7 +13,7 @@
 body, html {
   width: 100%;
   height: 100vh;
-  overflow: hidden; /* Strictly no scrolling */
+  overflow: hidden;
   font-family: var(--primary-font);
   background-color: var(--bg-color);
   color: var(--text-main);
@@ -35,9 +35,38 @@ body, html {
   height: 100%;
 }
 
+/* Orbital rings at bottom */
+.orbits {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(500px, 75vw);
+  pointer-events: none;
+  opacity: 0;
+  animation: fadeInSvg 2s ease 1s forwards;
+}
+
+@keyframes fadeInSvg {
+  to { opacity: 1; }
+}
+
+.orbit {
+  animation: pulse 8s ease-in-out infinite alternate;
+}
+.orbit-2 { animation-delay: 2s; }
+.orbit-3 { animation-delay: 4s; }
+
+@keyframes pulse {
+  0% { opacity: 0.05; }
+  50% { opacity: 0.2; }
+  100% { opacity: 0.05; }
+}
+
+/* Main content */
 .center-content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
   width: 100%;
   height: 100%;
   display: flex;
@@ -52,28 +81,48 @@ body, html {
   font-family: 'SF Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 2.5rem;
   font-weight: 400;
-  letter-spacing: normal;
-  margin-bottom: 80px; 
+  letter-spacing: 0.05em;
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.3s forwards;
 }
 
 .message {
-  font-size: clamp(3rem, 6vw, 5rem);
-  font-weight: 500;
-  letter-spacing: -1.5px;
-  line-height: 1.1;
-  margin-bottom: 80px;
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: lowercase;
+  color: #888;
+  opacity: 0;
+  animation: fadeUp 1s ease 0.8s forwards;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .contact-link {
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--text-main);
+  font-size: 1rem;
+  font-weight: 400;
+  color: #888;
   text-decoration: none;
-  border-bottom: 2px solid var(--text-main);
-  padding-bottom: 4px;
-  transition: opacity 0.3s ease;
+  letter-spacing: 0.05em;
+  margin-top: 48px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, color 0.3s ease;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.3s forwards;
 }
 
 .contact-link:hover {
-  opacity: 0.5;
+  color: var(--text-main);
+  border-bottom-color: var(--text-main);
 }
