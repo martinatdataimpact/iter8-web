@@ -162,6 +162,17 @@ body, html {
   animation: fadeUp 1s ease 0.8s forwards;
 }
 
+.launch-date {
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: lowercase;
+  color: #aaa;
+  margin-top: 10px;
+  opacity: 0;
+  animation: fadeUp 1s ease 1.1s forwards;
+}
+
 @keyframes fadeUp {
   from {
     opacity: 0;
