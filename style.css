@@ -44,35 +44,6 @@ body, html {
   margin-top: 48px;
 }
 
-/* Orbital rings behind signup */
-.orbits {
-  position: absolute;
-  top: 70%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: min(680px, 95vw);
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0;
-  animation: fadeInSvg 2s ease 1s forwards;
-}
-
-@keyframes fadeInSvg {
-  to { opacity: 1; }
-}
-
-.orbit {
-  animation: pulse 8s ease-in-out infinite alternate;
-}
-.orbit-2 { animation-delay: 2s; }
-.orbit-3 { animation-delay: 4s; }
-
-@keyframes pulse {
-  0% { opacity: 0.05; }
-  50% { opacity: 0.2; }
-  100% { opacity: 0.05; }
-}
-
 /* Growing flower */
 .flower-wrap {
   width: 80px;
