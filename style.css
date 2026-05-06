@@ -143,7 +143,9 @@ body, html {
 }
 
 .logo {
+  display: block;
   width: 160px;
+  max-width: 160px;
   height: auto;
   margin-bottom: 24px;
   opacity: 0;
