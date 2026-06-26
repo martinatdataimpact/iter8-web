@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produkter — iter8</title>
+  <meta name="description" content="Monitor, Ask, Integrate och Subscribe — fyra produkter för att förstå och förbättra kollektivtrafikens framkomlighet.">
+  <link rel="icon" type="image/png" href="./assets/iter8_favicon.png">
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="./"><img src="./assets/iter8_no_bg.png" alt="iter8" class="nav-logo"></a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Meny">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="./">Hem</a></li>
+        <li><a href="./produkter.html" class="active">Produkter</a></li>
+        <li><a href="./om.html">Om iter8</a></li>
+        <li><a href="./kontakt.html">Kontakt</a></li>
+        <li><a href="./kontakt.html#prova" class="nav-cta">Prova nu</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Page header -->
+  <section class="about-hero">
+    <div class="container text-center">
+      <p class="section-label fade-up fade-up-1">Produkter</p>
+      <h1 class="fade-up fade-up-2">Fyra produkter.<br>En dataplattform.</h1>
+      <p class="subtitle fade-up fade-up-3" style="margin: var(--space-md) auto 0;">
+        Alla drivna av samma kvalitetssäkrade restidsdata från 16 svenska operatörer.
+      </p>
+    </div>
+  </section>
+
+  <!-- Product 1: Monitor -->
+  <section id="monitor">
+    <div class="container">
+      <div class="feature-row reveal">
+        <div class="feature-text">
+          <p class="section-label">Produkt 1</p>
+          <h3>🖥️ Monitor · Övervaka</h3>
+          <p>
+            En interaktiv framkomlighetspanel där du väljer operatör, linje och
+            period via en karta med lasso-verktyg. Datapaketet byggs live och
+            analyseras direkt i webbläsaren.
+          </p>
+          <p style="margin-top: var(--space-md);">
+            <strong>Punktlighet</strong> — Ankomst/avgångspunktlighet per hållplats, slot och dagtyp.<br>
+            <strong>Hastighet</strong> — Färgkodade segment på karta: grön (i tid) → röd (långsam).<br>
+            <strong>Åtgärdsförslag</strong> — Prioriterade korsningar med störst restidsförlust.<br>
+            <strong>Uppföljning</strong> — Före/efter-jämförelser per genomförd åtgärd.
+          </p>
+          <a href="./kontakt.html#prova" class="btn btn-secondary" style="margin-top: var(--space-lg);">Skapa en app med verklig data på 30 sek →</a>
+        </div>
+        <div class="feature-visual">
+          <div style="padding: var(--space-xl); text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: var(--space-md);">🗺️</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Interaktiv karta med<br>färgkodade segment</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Dashboard modules table -->
+  <section class="section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <h2>Dashboard-moduler</h2>
+        <p class="subtitle">
+          Allt från övergripande prestanda till detaljerade fordonsanalyser.
+        </p>
+      </div>
+
+      <div class="card-grid reveal">
+        <div class="card">
+          <span class="card-icon">📊</span>
+          <h3>Prestanda</h3>
+          <p>Punktlighet, hastighet, avvikelser och avtalsuppföljning. Kärnan i varje framkomlighetsanalys.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🎯</span>
+          <h3>Åtgärdsförslag</h3>
+          <p>Prioriterade infrastrukturåtgärder — vilka korsningar ger störst nytta per investerad krona?</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🕐</span>
+          <h3>Körtid</h3>
+          <p>Uppmätt vs planerad körtid, typvecka-mönster och justeringsförslag — input till nya tidtabeller.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🚌</span>
+          <h3>Fordon</h3>
+          <p>Fordonsåtgång, omloppstider och utnyttjandegrad. Optimera flottan baserat på verklig data.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">📈</span>
+          <h3>Efterfrågan</h3>
+          <p>Data om arbetsställen, boende och uppskattad beläggning — var finns resenärerna?</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">📌</span>
+          <h3>Fokusplatser</h3>
+          <p>Definiera egna bevakningspunkter — korsningar, sträckor, hållplatser — och följ dem över tid.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product 2: Ask -->
+  <section id="ask">
+    <div class="container">
+      <div class="feature-row reverse reveal">
+        <div class="feature-text">
+          <p class="section-label">Produkt 2</p>
+          <h3>🤖 Ask · Fråga</h3>
+          <p>
+            Ställ frågor om framkomlighet på naturlig svenska. Lasse översätter
+            till SQL, kör analysen, och presenterar svaret med kartor och diagram
+            — på sekunder.
+          </p>
+          <p style="margin-top: var(--space-md);">
+            <strong>"Var tappar linje 5 mest tid?"</strong> → Instant svar med karta.<br>
+            <strong>"Rangordna de 10 värsta korsningarna"</strong> → Prioriterad lista.<br>
+            <strong>"Jämför morgonrusning med kväll"</strong> → Slot-jämförelse med diagram.<br>
+            <strong>"Skriv ett underlag till nämnden"</strong> → Rapport i markdown/PDF.
+          </p>
+          <p style="margin-top: var(--space-md); color: var(--text-secondary);">
+            Noll inlärningskurva. Alla kan ställa en fråga — från trafikplaneraren
+            till politikern. Lasse visar alltid sin källdata och query för full
+            transparens.
+          </p>
+        </div>
+        <div class="feature-visual">
+          <div style="padding: var(--space-xl); text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: var(--space-md);">💬</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Fråga-svar på<br>naturlig svenska</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product 3: Integrate -->
+  <section class="section-alt" id="integrate">
+    <div class="container">
+      <div class="feature-row reveal">
+        <div class="feature-text">
+          <p class="section-label">Produkt 3</p>
+          <h3>📋 Integrate · Integrera</h3>
+          <p>
+            iter8 mäter faktisk körtid mellan varje hållplatspar, per departure
+            slot (morgon/dag/kväll/helg). Integrate aggregerar mätningarna
+            till realistiska körtider — redo för direkt import i planeringssystemet.
+          </p>
+          <p style="margin-top: var(--space-md);">
+            <strong>Körtider per hållplatspar</strong> — Median/percentil per slot och dagtyp.<br>
+            <strong>Typvecka</strong> — Mån–Fre, Lör, Sön separerade mönster.<br>
+            <strong>Justeringsförslag</strong> — "Lägg till 42 sekunder vid Värnhem, morgon-slot".<br>
+            <strong>Export</strong> — CSV, JSON, GTFS-kompatibelt, Hastus/Trapeze-format.
+          </p>
+        </div>
+        <div class="feature-visual">
+          <div style="padding: var(--space-xl); text-align: center; font-family: var(--font-mono); font-size: 0.8rem; text-align: left; color: var(--text-secondary);">
+            <div style="margin-bottom: 8px; color: var(--text-muted); font-size: 0.7rem;">körtidsexport.csv</div>
+            <div>hpl_a,hpl_b,slot,körtid_s</div>
+            <div>Värnhem,Drottningt.,MF_07,242</div>
+            <div>Drottningt.,Södervärn,MF_07,318</div>
+            <div>Södervärn,Mobilia,MF_07,195</div>
+            <div style="color: var(--accent);">...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product 4: Subscribe -->
+  <section id="subscribe">
+    <div class="container">
+      <div class="feature-row reverse reveal">
+        <div class="feature-text">
+          <p class="section-label">Produkt 4</p>
+          <h3>🔔 Subscribe · Bevaka</h3>
+          <p>
+            En AI-agent som bevakar ert nät åt er. Så fort något inträffar — en
+            linje som plötsligt tappar tid, en åtgärd som börjar ge effekt — hör
+            den av sig direkt i mailen. Eller schemalägg regelbundna rapporter.
+          </p>
+          <p style="margin-top: var(--space-md);">
+            <strong>Händelselarm</strong> — Mail så fort en avvikelse upptäcks på en bevakad linje eller plats.<br>
+            <strong>Regelbundna rapporter</strong> — Vecko- eller månadsvis sammanfattning, automatiskt i inkorgen.<br>
+            <strong>Egna bevakningar</strong> — Välj linjer, sträckor och tröskelvärden ni bryr er om.<br>
+            <strong>Noll inloggning</strong> — Insikterna kommer till er, inte tvärtom.
+          </p>
+        </div>
+        <div class="feature-visual">
+          <div style="padding: var(--space-xl); text-align: center;">
+            <div style="font-size: 4rem; margin-bottom: var(--space-md);">📬</div>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Insikter &amp; larm<br>direkt i inkorgen</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison table -->
+  <section class="section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">Jämförelse</p>
+        <h2>Varför iter8?</h2>
+      </div>
+
+      <div class="reveal" style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border);">
+              <th style="text-align: left; padding: 12px 16px; color: var(--text-muted); font-weight: 500;"></th>
+              <th style="text-align: center; padding: 12px 16px; color: var(--text-muted); font-weight: 500;">GPS-studie</th>
+              <th style="text-align: center; padding: 12px 16px; color: var(--text-muted); font-weight: 500;">Egenbyggt</th>
+              <th style="text-align: center; padding: 12px 16px; color: var(--accent); font-weight: 600;">iter8</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px 16px; font-weight: 500;">Mätperiod</td>
+              <td style="padding: 12px 16px; text-align: center;">5 dagar</td>
+              <td style="padding: 12px 16px; text-align: center;">Beror på</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">365 dagar/år</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px 16px; font-weight: 500;">Upplösning</td>
+              <td style="padding: 12px 16px; text-align: center;">Hållplats</td>
+              <td style="padding: 12px 16px; text-align: center;">Hållplats</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">≈20 meter</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px 16px; font-weight: 500;">Kostnad</td>
+              <td style="padding: 12px 16px; text-align: center;">200–500 tkr/studie</td>
+              <td style="padding: 12px 16px; text-align: center;">2 FTE × 2 år</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">Prenumeration</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px 16px; font-weight: 500;">Ny hårdvara</td>
+              <td style="padding: 12px 16px; text-align: center;">GPS-loggar</td>
+              <td style="padding: 12px 16px; text-align: center;">Nej</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">Nej</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px 16px; font-weight: 500;">Uppföljning</td>
+              <td style="padding: 12px 16px; text-align: center;">Ny studie krävs</td>
+              <td style="padding: 12px 16px; text-align: center;">Manuellt</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">Automatiskt</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 12px 16px; font-weight: 500;">AI-chatt</td>
+              <td style="padding: 12px 16px; text-align: center;">—</td>
+              <td style="padding: 12px 16px; text-align: center;">—</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">✓ Ask (Lasse)</td>
+            </tr>
+            <tr>
+              <td style="padding: 12px 16px; font-weight: 500;">Avisering &amp; rapporter</td>
+              <td style="padding: 12px 16px; text-align: center;">—</td>
+              <td style="padding: 12px 16px; text-align: center;">—</td>
+              <td style="padding: 12px 16px; text-align: center; font-weight: 500; color: var(--accent);">✓ Subscribe</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-dark">
+    <div class="container cta-section reveal">
+      <h2>Vill du se era egna data?</h2>
+      <p class="subtitle">
+        Välj en linje. På 30 sekunder har ni en färdig app med en hel veckas
+        data — för 1 000 kr. Inga slides, bara er verklighet.
+      </p>
+      <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin-top: var(--space-lg);">
+        <a href="./kontakt.html#prova" class="btn btn-primary" style="background: #fff; color: var(--bg-dark);">Prova nu →</a>
+        <a href="./kontakt.html#demo" class="btn btn-secondary" style="color: #fff; border-color: rgba(255,255,255,0.35);">Boka demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <img src="./assets/iter8_no_bg.png" alt="iter8" class="footer-logo">
+      <ul class="footer-links">
+        <li><a href="./produkter.html">Produkter</a></li>
+        <li><a href="./om.html">Om oss</a></li>
+        <li><a href="./kontakt.html">Kontakt</a></li>
+      </ul>
+      <p class="footer-copy">© 2026 iter8 AB</p>
+    </div>
+  </footer>
+
+  <script src="./main.js"></script>
+</body>
+</html>

@@ -3,72 +3,266 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iter8</title>
-  <meta name="description" content="iter8 — något nytt tar form. Lansering Q3 2026.">
-  <link rel="icon" type="image/png" href="./iter8_favicon.png">
-  <link rel="stylesheet" href="./style.css?v=3">
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JF92SKXM2K"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-JF92SKXM2K');
-  </script>
+  <title>iter8 — Framkomlighetsanalys för kollektivtrafiken</title>
+  <meta name="description" content="iter8 ger trafikhuvudmän, kommuner och operatörer daglig insyn i var bussarna tappar tid — på gatusegment-nivå — helt baserat på befintlig data.">
+  <meta name="keywords" content="framkomlighet, kollektivtrafik, GTFS, restid, buss, tidtabell, AI, trafikplanering">
+  <meta property="og:title" content="iter8 — Framkomlighetsanalys för kollektivtrafiken">
+  <meta property="og:description" content="Daglig, automatisk restidsanalys på gatunivå. Ingen ny hårdvara, inga manuella studier.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://iter8.se">
+  <link rel="icon" type="image/png" href="./assets/iter8_favicon.png">
+  <link rel="stylesheet" href="./style.css">
+
 </head>
 <body>
-  <!-- Animated SVG background -->
-  <div class="svg-container">
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-      <path id="fluid" fill="#FFF8E8" d="" />
-      <path id="fluid-2" fill="#E8E0D0" d="" />
-    </svg>
-  </div>
 
-  <main class="center-content">
-    <!-- Growing flower -->
-    <div class="flower-wrap" aria-hidden="true">
-      <svg class="flower-svg" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Stem -->
-        <line class="stem" x1="50" y1="180" x2="50" y2="75" stroke="#4a7c59" stroke-width="1.2" stroke-linecap="round"/>
-        <!-- Left leaf -->
-        <path class="leaf leaf-l" d="M50 130 C38 120, 28 125, 30 135 C32 140, 42 138, 50 130Z" fill="#5a9e6f"/>
-        <!-- Right leaf -->
-        <path class="leaf leaf-r" d="M50 110 C62 100, 72 105, 70 115 C68 120, 58 118, 50 110Z" fill="#5a9e6f"/>
-        <!-- Petals -->
-        <g class="petals" transform="translate(50,55) rotate(22.5)">
-          <ellipse class="petal p1" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(0)"/>
-          <ellipse class="petal p2" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(45)"/>
-          <ellipse class="petal p3" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(90)"/>
-          <ellipse class="petal p4" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(135)"/>
-          <ellipse class="petal p5" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(180)"/>
-          <ellipse class="petal p6" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(225)"/>
-          <ellipse class="petal p7" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(270)"/>
-          <ellipse class="petal p8" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(315)"/>
-          <!-- Center -->
-          <circle class="flower-center" r="5" fill="#f0c75e"/>
-        </g>
+  <!-- Navigation -->
+  <nav class="nav" id="nav">
+    <div class="nav-inner">
+      <a href="./"><img src="./assets/iter8_no_bg.png" alt="iter8" class="nav-logo"></a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Meny">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="./" class="active">Hem</a></li>
+        <li><a href="./produkter.html">Produkter</a></li>
+        <li><a href="./om.html">Om iter8</a></li>
+        <li><a href="./kontakt.html">Kontakt</a></li>
+        <li><a href="./kontakt.html#prova" class="nav-cta">Prova nu</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero" id="hero">
+    <div class="svg-bg">
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none">
+        <path id="fluid" fill="#FFF8E8" d="" />
+        <path id="fluid-2" fill="#E8E0D0" d="" />
       </svg>
     </div>
 
-    <img class="logo" src="./iter8_no_bg.png" alt="iter8" />
-    <h1 class="message">något nytt tar form</h1>
-    <p class="launch-date">lansering Q3 2026</p>
+    <div class="hero-content">
+      <p class="section-label fade-up fade-up-1">Framkomlighetsplattform</p>
+      <h1 class="fade-up fade-up-2">Varje sekund räknas.<br>Vi mäter dem alla.</h1>
+      <p class="subtitle fade-up fade-up-3">
+        iter8 ger trafikhuvudmän, kommuner och operatörer daglig insyn i var
+        bussarna tappar tid — på vägsegment-nivå, med kvalitetssäkrad data och exceptionell precision.
+      </p>
+      <div class="hero-cta-row fade-up fade-up-4">
+        <a href="./kontakt.html#prova" class="btn btn-primary">Prova nu</a>
+        <a href="./produkter.html" class="btn btn-secondary">Se produkterna →</a>
+      </div>
+    </div>
+  </section>
 
-    <!-- Signup area with orbital loops behind it -->
-    <div class="signup-area">
+  <!-- Stats -->
+  <section class="section-alt">
+    <div class="container">
+      <div class="stats-bar reveal">
+        <div class="stat-item">
+          <div class="stat-number">16</div>
+          <div class="stat-label">Operatörer i drift</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">≈20m</div>
+          <div class="stat-label">Spatial upplösning</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">365</div>
+          <div class="stat-label">Dagar/år data</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">~0</div>
+          <div class="stat-label">Ny hårdvara krävs</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Problem/Solution -->
+  <section>
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">Problemet</p>
+        <h2>GPS-studier kostar hundratusentals kronor<br>och visar bara en bråkdel</h2>
+        <p class="subtitle">
+          Traditionella framkomlighetsstudier mäter 5 dagar, kostar 200–500 tkr,
+          och ger data på hållplatsnivå. Med iter8 får ni 365 dagars mätdata
+          på gatusegment-nivå — automatiskt.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Products -->
+  <section class="section-alt" id="produkter-preview">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">Produkter</p>
+        <h2>Fyra produkter, en plattform</h2>
+        <p class="subtitle">
+          Allt drivs av samma kvalitetssäkrade restidsdata — från daglig övervakning
+          till automatiska tidtabeller.
+        </p>
+      </div>
+
+      <div class="card-grid reveal">
+        <!-- Monitor -->
+        <div class="card">
+          <span class="card-icon">🖥️</span>
+          <h3>Monitor <span style="color: var(--text-muted); font-weight: 400;">· Övervaka</span></h3>
+          <p>
+            Interaktiv framkomlighetspanel med färgkodade kartor, punktlighetsanalys,
+            åtgärdsförslag och trenduppföljning. Välj linjer, perioder och slots
+            — se insikterna direkt.
+          </p>
+        </div>
+
+        <!-- Ask -->
+        <div class="card">
+          <span class="card-icon">🤖</span>
+          <h3>Ask <span style="color: var(--text-muted); font-weight: 400;">· Fråga</span></h3>
+          <p>
+            Ställ frågor på svenska till AI-analytikern Lasse: "Var tappar linje 5
+            mest tid under morgonrusningen?" Svar med kartor, diagram och
+            åtgärdsunderlag — på sekunder.
+          </p>
+        </div>
+
+        <!-- Integrate -->
+        <div class="card">
+          <span class="card-icon">📋</span>
+          <h3>Integrate <span style="color: var(--text-muted); font-weight: 400;">· Integrera</span></h3>
+          <p>
+            Automatiska körtider per hållplatspar och tidslot, baserade på
+            verkliga mätningar. Exportera direkt till Hastus, Trapeze eller
+            CSV — redo för import.
+          </p>
+        </div>
+
+        <!-- Subscribe -->
+        <div class="card">
+          <span class="card-icon">🔔</span>
+          <h3>Subscribe <span style="color: var(--text-muted); font-weight: 400;">· Bevaka</span></h3>
+          <p>
+            En AI-agent som bevakar ert nät och hör av sig så fort något händer
+            — eller med regelbundna rapporter. Avvikelser, trender och
+            åtgärdsbehov direkt i inkorgen, utan att logga in.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center" style="margin-top: var(--space-xl);">
+        <a href="./produkter.html" class="btn btn-ghost">Läs mer om produkterna →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section>
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">Så fungerar det</p>
+        <h2>Från befintlig data till beslutsstöd</h2>
+      </div>
+
+      <div class="steps reveal">
+        <div class="step">
+          <h3>Insamling</h3>
+          <p>Vi hämtar realtidspositioner som era operatörer redan producerar — varje minut, dygnet runt.</p>
+        </div>
+        <div class="step">
+          <h3>Koppling</h3>
+          <p>Vi kopplar varje position till rätt vägsegment, så att restiden mäts exakt där den uppstår.</p>
+        </div>
+        <div class="step">
+          <h3>Analys</h3>
+          <p>Restider beräknas per vägsegment och jämförs med tidtabellen — slot för slot.</p>
+        </div>
+        <div class="step">
+          <h3>Insikt</h3>
+          <p>Monitor, Ask, Integrate och Subscribe ger er dagliga, handlingsbara beslutsunderlag.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Customer segments -->
+  <section class="section-alt">
+    <div class="container">
+      <div class="section-header reveal">
+        <p class="section-label">För vem</p>
+        <h2>Byggd för hela kollektivtrafikekosystemet</h2>
+      </div>
+
+      <div class="segment-grid reveal">
+        <div class="segment-card">
+          <span class="segment-icon">🏛️</span>
+          <h3>Trafikhuvudmän</h3>
+          <p>Följ upp avtal, prioritera åtgärder, rapportera till nämnd — med dagliga data.</p>
+        </div>
+        <div class="segment-card">
+          <span class="segment-icon">🏙️</span>
+          <h3>Kommuner</h3>
+          <p>Mät effekten av signalprioritering och bussfiler — vecka för vecka.</p>
+        </div>
+        <div class="segment-card">
+          <span class="segment-icon">📊</span>
+          <h3>Konsulter</h3>
+          <p>Sluta samla data, börja analysera. 365 dagar istället för 5 dagars GPS-studie.</p>
+        </div>
+        <div class="segment-card">
+          <span class="segment-icon">🚌</span>
+          <h3>Bussoperatörer</h3>
+          <p>Undvik viten — visa att tidtabellen behöver justeras, inte era förare.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section-dark">
+    <div class="container cta-section reveal">
+      <h2>Er data. Era insikter. Varje dag.</h2>
+      <p class="subtitle">
+        Välj en linje, få en hel veckas framkomlighetsanalys för 1 000 kr.
+        Appen med era egna data är redo på 30 sekunder.
+      </p>
+      <div style="display: flex; gap: var(--space-md); justify-content: center; flex-wrap: wrap; margin-top: var(--space-lg);">
+        <a href="./kontakt.html#prova" class="btn btn-primary" style="background: #fff; color: var(--bg-dark);">Prova nu →</a>
+        <a href="./kontakt.html#demo" class="btn btn-secondary" style="color: #fff; border-color: rgba(255,255,255,0.35);">Boka demo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Signup -->
+  <section>
+    <div class="container cta-section reveal">
+      <p class="section-label">Lansering Q3 2026</p>
+      <h2>Håll dig uppdaterad</h2>
       <form id="signup-form" class="signup-form" onsubmit="return handleSignup(event)">
-        <p class="signup-label">håll dig uppdaterad</p>
         <div class="signup-input-row">
           <input type="email" id="signup-email" placeholder="din@epost.se" required autocomplete="email" />
-          <button type="submit" id="signup-btn">meddela mig</button>
+          <button type="submit">meddela mig</button>
         </div>
       </form>
       <p id="signup-thanks" class="signup-thanks" hidden>vi hör av oss ✓</p>
     </div>
+  </section>
 
-    <a href="mailto:info@iter8.se" class="contact-link">info@iter8.se</a>
-  </main>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <img src="./assets/iter8_no_bg.png" alt="iter8" class="footer-logo">
+      <ul class="footer-links">
+        <li><a href="./produkter.html">Produkter</a></li>
+        <li><a href="./om.html">Om oss</a></li>
+        <li><a href="./kontakt.html">Kontakt</a></li>
+      </ul>
+      <p class="footer-copy">© 2026 iter8 AB</p>
+    </div>
+  </footer>
 
   <script src="./main.js"></script>
 </body>
