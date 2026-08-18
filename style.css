@@ -223,61 +223,46 @@ body, html {
   animation: fadeUp 1s ease 1.2s forwards;
 }
 
-/* Knappraden: "logga in" är primär, "en karta" sekundär — samma form och samma
-   intoning, men konturad så den inte konkurrerar om blicken. */
-.cta-row {
+/* CENTRERING UTAN TRANSFORM. @keyframes fadeUp animerar transform: translateY(),
+   och en animation skriver över elementets egen transform — en
+   translate(-50%,-50%) på knappen hade alltså nollställts i samma sekund
+   intoningen började. Överlägget centrerar med flex i stället och bär ingen
+   animation; knappen behåller sin. */
+.preview-cta {
   position: absolute;
   inset: 0;
   z-index: 2;
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
   align-items: center;
   justify-content: center;
 }
 
-/* Knapparna ligger ovanpå förhandsbilden, som är suddig men ljus. Utan egen
-   botten läser ingen av dem — därför fast fyllning på den primära och
-   frostat glas på den sekundära. */
-.cta-row .login-btn,
-.cta-row .map-btn {
+.preview-cta .login-btn {
   margin-top: 0;
-  padding: 11px 26px;
 }
 
-.cta-row .map-btn {
-  color: #2f4f3a;
-  background: rgba(255, 255, 255, 0.82);
-  backdrop-filter: blur(6px);
-  border-color: rgba(74, 124, 89, 0.35);
-}
-
-.cta-row .map-btn:hover {
-  background: rgba(255, 255, 255, 0.95);
-}
-
+/* Sekundär, under bilden. */
 .map-btn {
   display: inline-block;
-  margin-top: 32px;
-  padding: 12px 34px;
+  margin-top: 18px;
+  padding: 10px 26px;
   font-family: var(--primary-font);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   letter-spacing: 0.12em;
   text-transform: lowercase;
   text-decoration: none;
   color: #4a7c59;
   background: transparent;
-  border: 1px solid rgba(74, 124, 89, 0.45);
+  border: 1px solid rgba(74, 124, 89, 0.4);
   border-radius: 6px;
-  transition: background 0.25s ease, transform 0.25s ease, border-color 0.25s ease;
+  transition: background 0.25s ease, border-color 0.25s ease;
   opacity: 0;
-  animation: fadeUp 1s ease 1.35s forwards;
+  animation: fadeUp 1s ease 1.5s forwards;
 }
 
 .map-btn:hover {
   background: rgba(74, 124, 89, 0.08);
   border-color: #4a7c59;
-  transform: translateY(-1px);
 }
 
 .map-btn:focus-visible {
