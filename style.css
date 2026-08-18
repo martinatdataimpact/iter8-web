@@ -241,10 +241,10 @@ body, html {
   margin-top: 0;
 }
 
-/* Sekundär, under bilden. */
+/* Bonuslänk, långt under plattformsinnehållet. */
 .map-btn {
   display: inline-block;
-  margin-top: 18px;
+  margin-top: 56px;
   padding: 10px 26px;
   font-family: var(--primary-font);
   font-size: 0.85rem;
@@ -257,7 +257,7 @@ body, html {
   border-radius: 6px;
   transition: background 0.25s ease, border-color 0.25s ease;
   opacity: 0;
-  animation: fadeUp 1s ease 1.5s forwards;
+  animation: fadeUp 1s ease 1.9s forwards;
 }
 
 .map-btn:hover {

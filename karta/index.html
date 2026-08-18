@@ -40,11 +40,8 @@
   <div id="legend"></div>
   <div class="foot">Klicka i listan för att tända/släcka en klass.<br>
     Tidtabell: normalvecka 4–10 maj 2026.
-    <div style="margin-top:8px;font-size:10px;line-height:1.5">
-      Kollektivtrafikdata: Trafiklab / Samtrafiken (GTFS Sverige&nbsp;3).
-      Byggnader: Lantmäteriet. Befolkning: SCB.
-      Bakgrundskarta: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:inherit">OpenStreetMap</a>-bidragsgivare, ©&nbsp;<a href="https://carto.com/attributions" target="_blank" rel="noopener" style="color:inherit">CARTO</a>.
-      Karta av <a href="https://iter8.se" style="color:inherit">iter8</a>.
+    <div style="margin-top:8px;font-size:10px;opacity:.7">
+      Trafiklab · Lantmäteriet · SCB · ©&nbsp;<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:inherit">OSM</a>, <a href="https://carto.com/attributions" target="_blank" rel="noopener" style="color:inherit">CARTO</a>
     </div>
   </div>
 </div>
@@ -144,7 +141,7 @@ let deckgl, data;
 function lager() {
   const l = [new TileLayer({
     id: 'bas', data: 'https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
-    minZoom: 0, maxZoom: 19, tileSize: 256, opacity: .8,
+    minZoom: 0, maxZoom: 19, tileSize: 256, opacity: .5,
     renderSubLayers: p => new BitmapLayer(p, {
       data: null, image: p.data,
       bounds: [p.tile.boundingBox[0][0], p.tile.boundingBox[0][1],
@@ -158,8 +155,8 @@ function lager() {
       l.push(new ScatterplotLayer({
         id: 'p' + k,
         data: {length: data.nP[k], attributes: {getPosition: {value: data.cent[k], size: 2}}},
-        getFillColor: KLASSER[k].f, radiusUnits: 'meters', getRadius: 8,
-        radiusMinPixels: 1, radiusMaxPixels: 3, parameters: {depthTest: false}
+        getFillColor: KLASSER[k].f, radiusUnits: 'meters', getRadius: 14,
+        radiusMinPixels: 2, radiusMaxPixels: 5, parameters: {depthTest: false}
       }));
       continue;
     }
