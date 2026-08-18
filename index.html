@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iter8 - Kommer snart</title>
-  <meta name="description" content="iter8 — något nytt tar form. Lansering Q3 2026.">
+  <title>iter8</title>
+  <meta name="description" content="iter8 — logga in på app.iter8.se.">
   <link rel="icon" type="image/png" href="./iter8_favicon.png">
-  <link rel="stylesheet" href="./style.css?v=3">
+  <link rel="stylesheet" href="./style.css?v=4">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JF92SKXM2K"></script>
   <script>
@@ -52,10 +52,15 @@
     </div>
 
     <img class="logo" src="./iter8_no_bg.png" alt="iter8" />
-    <h1 class="message">något nytt tar form</h1>
-    <p class="launch-date">lansering Q3 2026</p>
 
-    <!-- Signup area with orbital loops behind it -->
+    <!-- Blurred teaser of the app -->
+    <div class="preview-wrap" aria-hidden="true">
+      <img class="preview" src="./preview.png" width="720" height="411" alt="" />
+    </div>
+
+    <a class="login-btn" href="https://app.iter8.se">logga in</a>
+
+    <!-- Email signup (posts to the Apps Script sheet endpoint in main.js) -->
     <div class="signup-area">
       <form id="signup-form" class="signup-form" onsubmit="return handleSignup(event)">
         <p class="signup-label">håll dig uppdaterad</p>
