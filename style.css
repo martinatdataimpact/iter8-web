@@ -177,7 +177,7 @@ body, html {
 .preview-wrap {
   position: relative;
   width: 100%;
-  max-width: 520px;
+  max-width: 420px;
   margin-top: 8px;
   border-radius: 10px;
   overflow: hidden;
