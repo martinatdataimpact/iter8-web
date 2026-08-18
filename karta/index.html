@@ -1,0 +1,224 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Kollektivtrafikens tillgänglighet · varje byggnad i Sverige</title>
+<script src="deck.min.js"></script>
+<style>
+  html,body{margin:0;height:100%;background:#f6f8fa;color:#1f2328;
+            font:13px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,sans-serif}
+  #map{position:absolute;inset:0}
+  #panel{position:absolute;top:16px;left:16px;z-index:10;background:rgba(255,255,255,.94);
+         backdrop-filter:blur(8px);border:1px solid #d0d7de;border-radius:10px;
+         box-shadow:0 2px 12px rgba(31,35,40,.12);
+         padding:14px 16px;max-width:310px}
+  h1{font-size:14px;margin:0 0 2px;letter-spacing:-.01em}
+  .sub{color:#656d76;font-size:11px;margin:0 0 12px}
+  .row{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer;user-select:none}
+  .row:hover{opacity:.8}
+  .sw{width:14px;height:14px;border-radius:3px;flex:none;border:1px solid rgba(31,35,40,.18)}
+  .lbl{flex:1}
+  .num{color:#656d76;font-variant-numeric:tabular-nums;font-size:11px}
+  .off{opacity:.35}
+  .foot{color:#656d76;font-size:11px;margin-top:12px;border-top:1px solid #d0d7de;padding-top:10px}
+  #load{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+        z-index:20;background:#f6f8fa;flex-direction:column;gap:10px}
+
+  #bar{width:260px;height:3px;background:#d0d7de;border-radius:2px;overflow:hidden}
+  #bar i{display:block;height:100%;width:0;background:#2f81f7;transition:width .2s}
+  #tip{position:absolute;z-index:15;pointer-events:none;background:rgba(255,255,255,.97);
+       border:1px solid #d0d7de;border-radius:6px;padding:6px 9px;font-size:11px;display:none}
+</style>
+
+<div id="map"></div>
+<div id="load">
+  <div id="msg">Läser in 3,6 miljoner byggnader…</div>
+  <div id="bar"><i></i></div>
+  <p id="varning" style="color:#9a6700;font-size:11px;margin:6px 0 0;max-width:420px;text-align:center;display:none"></p>
+</div>
+<div id="panel" style="display:none">
+  <h1>Tillgänglighet till kollektivtrafik</h1>
+  <p class="sub">Viktade avgångar per vecka inom 1 000 m.<br>Varje byggnad i Sverige utom komplementbyggnader.</p>
+  <div id="legend"></div>
+  <div class="foot">Klicka i listan för att tända/släcka en klass.<br>
+    Tidtabell: normalvecka 4–10 maj 2026.
+    <div style="margin-top:8px;font-size:10px;line-height:1.5">
+      Kollektivtrafikdata: Trafiklab / Samtrafiken (GTFS Sverige&nbsp;3).
+      Byggnader: Lantmäteriet. Befolkning: SCB.
+      Bakgrundskarta: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener" style="color:inherit">OpenStreetMap</a>-bidragsgivare, ©&nbsp;<a href="https://carto.com/attributions" target="_blank" rel="noopener" style="color:inherit">CARTO</a>.
+      Karta av <a href="https://iter8.se" style="color:inherit">iter8</a>.
+    </div>
+  </div>
+</div>
+<div id="tip"></div>
+
+<script>
+// ── Klasserna: nationella sextiler av viktade avgångar/vecka. Klass 0 är inte
+// en sextil utan en egen kategori — byggnader helt utan hållplats inom 1 km.
+const KLASSER = [
+  {namn:'Ingen hållplats inom 1 km', f:[110,119,129], span:'0'},
+  {namn:'Lägsta sextilen',           f:[165,  0, 38], span:'≤ 33'},
+  {namn:'',                          f:[244,109, 67], span:'33–128'},
+  {namn:'',                          f:[254,224,139], span:'128–324'},
+  {namn:'',                          f:[217,239,139], span:'324–814'},
+  {namn:'',                          f:[102,189, 99], span:'814–1 989'},
+  {namn:'Högsta sextilen',           f:[  0,104, 55], span:'> 1 989'}
+];
+
+const el = s => document.querySelector(s);
+const setBar = p => el('#bar i').style.width = (p*100)+'%';
+
+// ── Avkodning ──────────────────────────────────────────────────────────────
+// Filformat BTA1: allt kvantiserat till ~1 m och delta-kodat mellan hörn, så
+// 28 M hörn väger 60 MB i stället för 826 MB GeoJSON. Sektionsordningen är vald
+// så varje TypedArray-vy kan läggas rakt på ArrayBuffern utan kopia.
+async function ladda() {
+  // CACHE API, inte bara webbläsarens vanliga cache: GitHub Pages skickar
+  // max-age=600, så utan den här skulle samma besökare ladda om 60 MB efter tio
+  // minuter. Här hämtas filen exakt en gång per webbläsare.
+  const burk = await caches.open('byggnader-v1');
+  let res = await burk.match('buildings.bin.gz');
+  if (!res) {
+    res = await fetch('buildings.bin.gz');
+    if (!res.ok) throw new Error('kunde inte hämta datafilen (' + res.status + ')');
+    await burk.put('buildings.bin.gz', res.clone());
+  }
+  const total = +res.headers.get('content-length') || 60504106;
+  let läst = 0;
+  const räknare = new TransformStream({transform(c, ctrl){
+    läst += c.byteLength; setBar(Math.min(läst/total, 1) * .55); ctrl.enqueue(c);
+  }});
+  const ström = res.body.pipeThrough(räknare).pipeThrough(new DecompressionStream('gzip'));
+  const buf = await new Response(ström).arrayBuffer();
+
+  const dv = new DataView(buf);
+  const npoly = dv.getUint32(8, true), nverts = dv.getUint32(12, true);
+  const LON0 = dv.getFloat64(16, true), LAT0 = dv.getFloat64(24, true);
+  const LONS = dv.getFloat64(32, true), LATS = dv.getFloat64(40, true);
+
+  let o = 48;
+  const first  = new Uint32Array(buf, o, npoly * 2);            o += npoly * 8;
+  const delta  = new Int16Array (buf, o, (nverts - npoly) * 2); o += (nverts - npoly) * 4;
+  const antal  = new Uint16Array(buf, o, npoly);                o += npoly * 2;
+  const klass  = new Uint8Array (buf, o, npoly);
+
+  // EN LAGER PER KLASS, inte en färgattribut per hörn: färgen blir en konstant
+  // på lagret i stället för 28 M x 3 byte (83 MB) i minnet, och tänd/släck blir
+  // gratis. Två pass — räkna först, allokera exakt, fyll sedan.
+  const nP = new Uint32Array(7), nV = new Uint32Array(7);
+  for (let p = 0; p < npoly; p++) { nP[klass[p]]++; nV[klass[p]] += antal[p]; }
+  const pos = [], start = [], cent = [], skriv = new Uint32Array(7), vSkriv = new Uint32Array(7);
+  for (let k = 0; k < 7; k++) {
+    pos[k]   = new Float32Array(nV[k] * 2);
+    start[k] = new Uint32Array(nP[k] + 1);
+    // Punktläget: en byggnad är sub-pixel under zoom ~9,5, så polygonerna
+    // aliaseras bort och kartan ser tom ut fast allt är ritat. Första hörnet
+    // duger som läge när träffytan ändå är en pixel.
+    cent[k]  = new Float32Array(nP[k] * 2);
+  }
+  setBar(.6);
+
+  let d = 0;
+  for (let p = 0; p < npoly; p++) {
+    const k = klass[p], n = antal[p];
+    let x = first[p*2], y = first[p*2+1];
+    const P = pos[k]; let v = vSkriv[k];
+    cent[k][skriv[k]*2] = LON0 + x * LONS; cent[k][skriv[k]*2+1] = LAT0 + y * LATS;
+    start[k][skriv[k]++] = v;
+    for (let i = 0; i < n; i++) {
+      if (i) { x += delta[d*2]; y += delta[d*2+1]; d++; }
+      P[v*2] = LON0 + x * LONS; P[v*2+1] = LAT0 + y * LATS; v++;
+    }
+    vSkriv[k] = v;
+    if ((p & 0xFFFFF) === 0) setBar(.6 + .35 * p / npoly);
+  }
+  for (let k = 0; k < 7; k++) start[k][nP[k]] = vSkriv[k];
+  return {pos, start, cent, nP, npoly, nverts};
+}
+
+// ── Karta ──────────────────────────────────────────────────────────────────
+const {DeckGL, SolidPolygonLayer, ScatterplotLayer, TileLayer, BitmapLayer} = deck;
+const PUNKTZOOM = 9.5;   // under denna ritas punkter, över den polygoner
+let zoom = 4.3;
+const på = new Array(7).fill(true);
+let deckgl, data;
+
+function lager() {
+  const l = [new TileLayer({
+    id: 'bas', data: 'https://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',
+    minZoom: 0, maxZoom: 19, tileSize: 256, opacity: .8,
+    renderSubLayers: p => new BitmapLayer(p, {
+      data: null, image: p.data,
+      bounds: [p.tile.boundingBox[0][0], p.tile.boundingBox[0][1],
+               p.tile.boundingBox[1][0], p.tile.boundingBox[1][1]]
+    })
+  })];
+  const punkter = zoom < PUNKTZOOM;
+  for (let k = 0; k < 7; k++) {
+    if (!på[k] || !data.nP[k]) continue;
+    if (punkter) {
+      l.push(new ScatterplotLayer({
+        id: 'p' + k,
+        data: {length: data.nP[k], attributes: {getPosition: {value: data.cent[k], size: 2}}},
+        getFillColor: KLASSER[k].f, radiusUnits: 'meters', getRadius: 8,
+        radiusMinPixels: 1, radiusMaxPixels: 3, parameters: {depthTest: false}
+      }));
+      continue;
+    }
+    l.push(new SolidPolygonLayer({
+      id: 'k' + k,
+      data: {length: data.nP[k], startIndices: data.start[k],
+             attributes: {getPolygon: {value: data.pos[k], size: 2}}},
+      _normalize: false, positionFormat: 'XY',
+      getFillColor: KLASSER[k].f, filled: true, extruded: false,
+      // Små byggnader försvinner under en pixel i utzoomat läge; en tunn
+      // linje runt polygonen gör att glesbygden alls syns nationellt.
+      stroked: false, pickable: false, parameters: {depthTest: false}
+    }));
+  }
+  return l;
+}
+
+function legend() {
+  el('#legend').innerHTML = KLASSER.map((k, i) =>
+    `<div class="row" data-k="${i}">
+       <span class="sw" style="background:rgb(${k.f})"></span>
+       <span class="lbl">${k.namn || k.span}${k.namn ? ` <span class="num">${k.span}</span>` : ''}</span>
+       <span class="num">${data.nP[i].toLocaleString('sv-SE')}</span>
+     </div>`).join('');
+  el('#legend').onclick = e => {
+    const r = e.target.closest('.row'); if (!r) return;
+    const k = +r.dataset.k; på[k] = !på[k];
+    r.classList.toggle('off', !på[k]);
+    deckgl.setProps({layers: lager()});
+  };
+}
+
+// deck.gl håller ~223 MB positioner plus tesselering. En telefon klarar det
+// inte — varna hellre än att låta fliken dö tyst.
+const svag = (navigator.deviceMemory && navigator.deviceMemory <= 4)
+          || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+if (svag) {
+  const v = el('#varning');
+  v.style.display = '';
+  v.textContent = 'Den här enheten har begränsat minne. Kartan håller ~223 MB '
+                + 'geometri i minnet och kan få webbläsaren att sluta svara. En dator rekommenderas.';
+}
+
+ladda().then(d => {
+  data = d;
+  el('#load').style.display = 'none';
+  el('#panel').style.display = '';
+  legend();
+  deckgl = new DeckGL({
+    container: 'map',
+    initialViewState: {longitude: 15.6, latitude: 62.5, zoom: 4.3, pitch: 0, bearing: 0},
+    controller: true,
+    layers: lager(),
+    onViewStateChange: ({viewState}) => {
+      const föreDetta = zoom < PUNKTZOOM;
+      zoom = viewState.zoom;
+      if ((zoom < PUNKTZOOM) !== föreDetta) deckgl.setProps({layers: lager()});
+    }
+  });
+  console.log(`${d.npoly.toLocaleString('sv-SE')} polygoner, ${d.nverts.toLocaleString('sv-SE')} hörn`);
+}).catch(e => { el('#msg').textContent = 'Fel: ' + e.message; console.error(e); });
+</script>
