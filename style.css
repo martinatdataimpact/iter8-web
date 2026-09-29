@@ -241,35 +241,6 @@ body, html {
   margin-top: 0;
 }
 
-/* Bonuslänk, långt under plattformsinnehållet. */
-.map-btn {
-  display: inline-block;
-  margin-top: 56px;
-  padding: 10px 26px;
-  font-family: var(--primary-font);
-  font-size: 0.85rem;
-  letter-spacing: 0.12em;
-  text-transform: lowercase;
-  text-decoration: none;
-  color: #4a7c59;
-  background: transparent;
-  border: 1px solid rgba(74, 124, 89, 0.4);
-  border-radius: 6px;
-  transition: background 0.25s ease, border-color 0.25s ease;
-  opacity: 0;
-  animation: fadeUp 1s ease 1.9s forwards;
-}
-
-.map-btn:hover {
-  background: rgba(74, 124, 89, 0.08);
-  border-color: #4a7c59;
-}
-
-.map-btn:focus-visible {
-  outline: 2px solid #4a7c59;
-  outline-offset: 3px;
-}
-
 .login-btn:hover {
   background: #3d6a4a;
   transform: translateY(-1px);
