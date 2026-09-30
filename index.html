@@ -4,9 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>iter8</title>
-  <meta name="description" content="iter8 — logga in på app.iter8.se.">
-  <link rel="icon" type="image/png" href="./iter8_favicon.png">
-  <link rel="stylesheet" href="./style.css?v=6">
+  <meta name="description" content="iter8 — lansering inom kort.">
+  <meta name="theme-color" content="#21303e">
+  <link rel="icon" href="./favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" href="./iter8-ikon-liggande-beige-pa-navy-32px.png" sizes="32x32">
+  <link rel="apple-touch-icon" href="./iter8-ikon-liggande-beige-pa-navy-180px.png">
+  <link rel="stylesheet" href="./style.css?v=7">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JF92SKXM2K"></script>
   <script>
@@ -17,64 +20,27 @@
   </script>
 </head>
 <body>
-  <!-- Animated SVG background -->
-  <div class="svg-container">
-    <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-      <path id="fluid" fill="#FFF8E8" d="" />
-      <path id="fluid-2" fill="#E8E0D0" d="" />
-    </svg>
-  </div>
+  <a class="login" href="https://app.iter8.se">Logga in</a>
 
   <main class="center-content">
-    <!-- Growing flower -->
-    <div class="flower-wrap" aria-hidden="true">
-      <svg class="flower-svg" viewBox="0 0 100 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Stem -->
-        <line class="stem" x1="50" y1="180" x2="50" y2="75" stroke="#4a7c59" stroke-width="1.2" stroke-linecap="round"/>
-        <!-- Left leaf -->
-        <path class="leaf leaf-l" d="M50 130 C38 120, 28 125, 30 135 C32 140, 42 138, 50 130Z" fill="#5a9e6f"/>
-        <!-- Right leaf -->
-        <path class="leaf leaf-r" d="M50 110 C62 100, 72 105, 70 115 C68 120, 58 118, 50 110Z" fill="#5a9e6f"/>
-        <!-- Petals -->
-        <g class="petals" transform="translate(50,55) rotate(22.5)">
-          <ellipse class="petal p1" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(0)"/>
-          <ellipse class="petal p2" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(45)"/>
-          <ellipse class="petal p3" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(90)"/>
-          <ellipse class="petal p4" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(135)"/>
-          <ellipse class="petal p5" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(180)"/>
-          <ellipse class="petal p6" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(225)"/>
-          <ellipse class="petal p7" cx="0" cy="-18" rx="6" ry="16" fill="#e8a0b4" transform="rotate(270)"/>
-          <ellipse class="petal p8" cx="0" cy="-18" rx="6" ry="16" fill="#dba0c7" transform="rotate(315)"/>
-          <!-- Center -->
-          <circle class="flower-center" r="5" fill="#f0c75e"/>
-        </g>
-      </svg>
-    </div>
+    <img class="symbol" src="./iter8-symbol-liggande-beige.svg" width="84" height="47" alt="iter8">
+    <div class="rule" aria-hidden="true"></div>
 
-    <img class="logo" src="./iter8_no_bg.png" alt="iter8" />
-
-    <!-- Blurred teaser of the app -->
-    <div class="preview-wrap">
-      <img class="preview" src="./preview.png" width="720" height="411" alt="" aria-hidden="true" />
-      <div class="preview-cta">
-        <a class="login-btn" href="https://app.iter8.se">logga in</a>
-      </div>
-    </div>
-
+    <h1>Lansering inom <em>kort</em></h1>
 
     <!-- Email signup (posts to the Apps Script sheet endpoint in main.js) -->
     <div class="signup-area">
       <form id="signup-form" class="signup-form" onsubmit="return handleSignup(event)">
-        <p class="signup-label">håll dig uppdaterad</p>
+        <p class="signup-label">Håll dig uppdaterad</p>
         <div class="signup-input-row">
-          <input type="email" id="signup-email" placeholder="din@epost.se" required autocomplete="email" />
-          <button type="submit" id="signup-btn">meddela mig</button>
+          <input type="email" id="signup-email" placeholder="din@epost.se" required autocomplete="email" aria-label="E-post" />
+          <button type="submit" id="signup-btn">Meddela mig</button>
         </div>
       </form>
-      <p id="signup-thanks" class="signup-thanks" hidden>vi hör av oss ✓</p>
+      <p id="signup-thanks" class="signup-thanks" hidden>Vi hör av oss.</p>
     </div>
 
-    <a href="mailto:info@iter8.se" class="contact-link">info@iter8.se</a>
+    <a href="mailto:lasse@iter8.se" class="contact-link">lasse@iter8.se</a>
   </main>
 
   <script src="./main.js"></script>
