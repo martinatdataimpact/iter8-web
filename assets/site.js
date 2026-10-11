@@ -24,8 +24,8 @@
   var START = 'Hur kommer vi igång?';
 
   /* ── Mätning (Google Analytics 4) ────────────────────────────────────────────────────
-     gtag laddas och händelserna nedan skickas BARA på den skarpa sajten (GA_HOSTS); på
-     förhandsvisningen och lokalt laddas ingenting och track() gör ingenting. Samtycket står
+     gtag laddas och händelserna nedan skickas BARA på den skarpa sajten (GA_HOSTS); lokalt
+     laddas ingenting och track() gör ingenting. Samtycket står
      som nekat (ingen samtyckesruta på sidan): GA sätter inga kakor och mäter utan att känna
      igen besökaren. grantAnalytics() finns för den dag sidan får ett samtyckesval.
      Det som mäts är vad besökaren gör på sidan – aldrig texten i en egen fråga.
@@ -249,7 +249,16 @@
       if (b.t === 'h') return h('h3', { key: i, className: 'blk-h' }, b.text);
       if (b.t === 'p') return h('p', { key: i, className: 'blk-p' }, b.text);
       if (b.t === 'lead') return h('p', { key: i, className: 'blk-lead' }, b.text);
-      if (b.t === 'kpis') return h('div', { key: i, className: 'fk__kpi' }, b.items.map(function (k) { return h(I8.KpiTile, { key: k.label, label: k.label, value: k.value, unit: k.unit, raised: true }); }));
+      if (b.t === 'kpis') return h('div', { key: i, className: 'fk__kpi' }, b.items.map(function (k) { return h(I8.KpiTile, { key: k.label, label: k.label, value: k.value, unit: k.unit, note: k.note, raised: true }); }));
+      // En jämförelse av andelar: en rad per mått, med talet stort och en stapel mot 100 %.
+      if (b.t === 'reach') return h('figure', { key: i, className: 'reach' }, b.title && h('figcaption', { className: 'fig__t' }, b.title),
+        b.rows.map(function (r) {
+          return h('div', { key: r.label, className: 'reach__row' },
+            h('span', { className: 'reach__label' }, r.label),
+            h('span', { className: 'reach__bar', role: 'img', 'aria-label': fmt(r.pct, 1) + ' procent' }, h('i', { style: { width: r.pct + '%' } })),
+            h('span', { className: 'reach__pct' }, fmt(r.pct, 1), h('small', null, '\u00a0%')),
+            h('span', { className: 'reach__note' }, r.note));
+        }));
       if (b.t === 'table') return h(Table, { key: i, caption: b.caption, columns: b.columns, rows: b.rows });
       if (b.t === 'chart') return h('figure', { key: i, className: 'fig' }, b.title && h('figcaption', { className: 'fig__t' }, b.title), h(EChart, { option: b.option, height: b.height, dec: b.dec }));
       if (b.t === 'smap') return h(SMap, { key: i, block: b, label: p.label });
@@ -360,8 +369,7 @@
     ['Tabeller, grafer och kartor', 'För hand i Excel'],
     ['Interaktiva rapporter', 'Statiska dokument'],
     ['Färdiga applikationer', 'Byggs och förvaltas själv'],
-    ['PDF och dataexport', 'För hand'],
-    ['Visar hur svaret räknades', 'Sitter hos en eller två personer']
+    ['PDF och dataexport', 'För hand']
   ];
   function End(p) {
     var ref = useRef(null);
@@ -374,10 +382,11 @@
           h('h2', { className: 'i8-end__title i8-end__st i8-end__st2', id: 'slut', tabIndex: -1, ref: ref }, 'Låter det för bra för att vara ', h('em', null, 'sant'), '?'),
           h('div', { className: 'i8-end__text i8-end__st i8-end__st3' }, h('p', null, 'Det är det inte.'), h('p', null, 'Vi har redan er data, allt som behövs är konton.')),
           h('table', { className: 'vs i8-end__st i8-end__st4' },
-            h('thead', null, h('tr', null, h('th', { scope: 'col' }, h('span', { className: 'i8-msg__sr' }, 'Vad')), h('th', { scope: 'col' }, 'I dag'), h('th', { scope: 'col' }, 'Med Lasse'))),
+            h('thead', null, h('tr', null, h('th', { scope: 'col', className: 'vs__yes' }, 'Med Lasse'), h('th', { scope: 'col' }, h('span', { className: 'i8-msg__sr' }, 'Vad')), h('th', { scope: 'col' }, 'I dag'))),
             h('tbody', null, VS.map(function (r) {
-              return h('tr', { key: r[0] }, h('th', { scope: 'row' }, r[0]), h('td', { className: 'vs__now' }, r[1]),
-                h('td', { className: 'vs__yes' }, h('span', { className: 'vs__check', 'aria-hidden': 'true' }), h('span', { className: 'i8-msg__sr' }, 'Ja')));
+              return h('tr', { key: r[0] },
+                h('td', { className: 'vs__yes' }, h('span', { className: 'vs__check', 'aria-hidden': 'true' }), h('span', { className: 'i8-msg__sr' }, 'Ja')),
+                h('th', { scope: 'row' }, r[0]), h('td', { className: 'vs__now' }, r[1]));
             }))),
           h('div', { className: 'i8-end__actions i8-end__st i8-end__st5' }, h(I8.Button, { variant: 'accent', icon: 'arrow-right', href: BOOK }, 'Boka en visning')),
           h('p', { className: 'i8-end__mail i8-end__st i8-end__st6' }, 'Skriver ni hellre? ', h('a', { href: 'mailto:lasse@iter8.se' }, 'lasse@iter8.se')),
@@ -406,7 +415,7 @@
             h('li', null, h('b', null, 'Begripligt.'), ' Rådata blir kartor, tabeller och svar du förstår direkt.'),
             h('li', null, h('b', null, 'Agerbart.'), ' Vi stannar inte vid diagram. Lasse föreslår vad ni kan göra, och var det gör störst skillnad.'),
             h('li', null, h('b', null, 'I framkant.'), ' Vi bygger vidare hela tiden. Ni får den nyaste tekniken utan att byta system.')),
-          h('p', { className: 'about__loop' }, 'Namnet ', h('em', null, 'iter8'), ' har två rötter. Iter är latin för väg. Iterate är att göra om: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
+          h('p', { className: 'about__loop' }, 'Namnet ', h('em', null, 'iter8'), ' har två rötter. Iter är latin för väg. Iterate är att upprepa: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
           h('p', { className: 'about__loop' }, 'Och ', h('em', null, 'Lasse'), ' då? Det var AI:ns första förslag på en rutinerad chaufför. 🤷'),
           h('h3', { className: 'about__h' }, 'Grundarna'),
           h('p', null, 'Eva-Marie Wenehed och Martin Bergström har byggt och drivit analysverktyg för svensk kollektivtrafik sedan 2019, hos regioner, städer, operatörer och akademi i hela landet. iter8 grundades 2026.'),

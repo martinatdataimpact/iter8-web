@@ -154,6 +154,19 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .lt { display: inline-flex; align-items: center; gap: 6px; }
 .lt::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--l); }
 
+/* Jämförelse av andelar: talet stort, en stapel mot hela bredden, och antalet bredvid. */
+.reach { margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.reach__row { display: grid; grid-template-columns: 96px minmax(80px, 1fr) 96px minmax(0, 150px); align-items: center; gap: var(--space-4); }
+.reach__label { font: 600 14px/18px var(--font-sans); color: var(--ink); }
+.reach__bar { height: 14px; border-radius: var(--radius-pill); background: var(--surface-raised); overflow: hidden; }
+.reach__bar i { display: block; height: 100%; border-radius: var(--radius-pill); background: var(--primary); animation: reach-grow 900ms cubic-bezier(.2,.7,.2,1) both; transform-origin: left; }
+.reach__row:first-of-type .reach__bar i { background: var(--sage); }
+@keyframes reach-grow { from { transform: scaleX(0); } }
+.reach__pct { font: 500 28px/1 var(--font-sans); font-variant-numeric: tabular-nums; color: var(--primary); text-align: right; white-space: nowrap; }
+.reach__pct small { font-size: 14px; color: var(--ink-muted); }
+.reach__note { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+@container (max-width: 560px) { .reach__row { grid-template-columns: 84px 1fr 84px; } .reach__note { grid-column: 1 / -1; margin-top: calc(-1 * var(--space-2)); } }
+
 /* Framkomlighetsverktyget: listan med platser och den valdas dygn. */
 .fk { display: grid; grid-template-columns: minmax(200px, 260px) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
 .fk__list { display: flex; flex-direction: column; gap: 2px; }
@@ -207,17 +220,19 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
   border-bottom: var(--line-hair) solid color-mix(in srgb, var(--on-primary) 18%, transparent); }
 .vs thead th { padding-top: 0; font: 600 12px/1 var(--font-sans); letter-spacing: .08em; text-transform: uppercase;
   color: color-mix(in srgb, var(--on-primary) 72%, transparent); }
-.vs thead th:last-child { color: var(--sage-soft); text-align: center; }
+.vs thead th.vs__yes { color: var(--sage-soft); white-space: nowrap; text-align: center; }
 .vs tbody th { font-weight: 600; }
 .vs__now { color: color-mix(in srgb, var(--on-primary) 66%, transparent); }
-.vs__yes { width: 96px; text-align: center !important; padding-right: 0 !important; }
+.vs__yes { width: 88px; text-align: center !important; padding-right: var(--space-4) !important; }
+.vs tr > :last-child { padding-right: 0; }
 .vs__check { display: block; margin: 0 auto; width: 20px; height: 20px; border-radius: 50%; background: var(--sage); position: relative; }
 .vs__check::after { content: ""; position: absolute; left: 7px; top: 3.5px; width: 5px; height: 10px;
   border: solid var(--on-sage); border-width: 0 2px 2px 0; transform: rotate(45deg); }
 @media (max-width: 600px) {
   .vs { font-size: 13px; line-height: 18px; }
   .vs th, .vs td { padding: 6px 8px 6px 0; }
-  .vs__yes { width: 64px; }
+  .vs__yes { width: 52px; padding-right: var(--space-2) !important; }
+  .vs thead th.vs__yes { white-space: normal; }
   .i8-end__text { font-size: 17px; line-height: 25px; }
   .i8-end__stage { padding-top: 56px; }
   .i8-end__inner { gap: 18px; }
@@ -298,6 +313,8 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
   .blocks { margin-left: 0; }
   .fk { grid-template-columns: 1fr; }
   .fk__kpi { grid-template-columns: 1fr; }
+  .reach__row { grid-template-columns: 84px 1fr 84px; }
+  .reach__note { grid-column: 1 / -1; margin-top: calc(-1 * var(--space-2)); }
   .askbox__own { flex-wrap: wrap; }
   .askbox__input { flex-basis: 100%; }
 }
@@ -306,6 +323,7 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
   .room, .work { transition: none; }
   .kmap__leg, .kmap__group { animation: none; stroke-dashoffset: 0; opacity: .9; }
   .kmap__area, .kmap__point { animation: none; opacity: 1; }
+  .reach__bar i { animation: none; }
   .kmap__top, .again { animation: none; opacity: 1; }
   .about, .about__sheet { animation: none; }
   .curtain { animation: curtain-fade 400ms ease 1800ms both; }
