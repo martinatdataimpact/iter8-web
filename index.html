@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sv">
+<html lang="sv" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -22,7 +22,9 @@
 <link rel="stylesheet" href="assets/ds/komponenter/bundle.css">
 <link rel="stylesheet" href="assets/site.css">
 <script>
-  /* Temat: ett uttryckligt val (data-theme) vinner, annars följer sidan systemet. */
+  /* Temat: ett uttryckligt val (data-theme) vinner, annars följer sidan systemet.
+     Mörkt läge är avstängt: <html> bär data-theme="light", så sidan är alltid ljus.
+     Ta bort attributet där för att låta sidan följa systemet igen. */
   (function () {
     var root = document.documentElement;
     if (root.hasAttribute('data-theme')) return;
