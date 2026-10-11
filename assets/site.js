@@ -1,6 +1,6 @@
-/* Lanseringswebben: sidan är ett samtal med Lasse, i samma ram som appen (app2).
+/* Lanseringswebben: sidan är ett samtal med Lasse, i samma ram som appen.
    Besökaren går nedåt i ett frågeträd av inspelade svar ur riktig trafik, med orter och
-   linjer dolda (assets/svar/, byggt av inspelning/trad.py). Frågorna är färdiga val: de
+   linjer dolda (assets/svar/). Frågorna är färdiga val: de
    går inte att ändra, och ett val skrivs in i rutan som om någon skrev det. En egen fråga
    får inget svar här – den leder till en visning. */
 (function () {

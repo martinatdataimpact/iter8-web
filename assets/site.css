@@ -1,4 +1,4 @@
-/* Lanseringswebben. Ramen är app2:s (app2/src/app.css): samma rum, växlare, meny och
+/* Lanseringswebben. Ramen är appens: samma rum, växlare, meny och
    samtal, så att webben och appen ser ut som samma sak. Bara designsystemets tokens;
    komponenterna kommer ur designsystemet. */
 html, body, #app { height: 100%; }
