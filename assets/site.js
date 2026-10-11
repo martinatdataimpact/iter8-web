@@ -53,7 +53,7 @@
        fraga   besökaren valde själv en fråga (question_select, inte den sidan ställer själv)
        slut    slutet visas (end_view)
        boka    ”Boka en visning”, var knappen än satt (booking_click) */
-  var CF_TOKEN = '239e5105f0a742e29bc77d133e828df9';  // iter8.se:s token i Cloudflare Web Analytics. Tomt = ingen mätning någonstans.
+  var CF_TOKEN = '2cfc02183b7247e9aea6776e527540c5';  // iter8.se:s token i Cloudflare Web Analytics. Tomt = ingen mätning någonstans.
   var CF_HOSTS = /^(www\.)?iter8\.se$/;
   var CF_LIVE = !!CF_TOKEN && CF_HOSTS.test(window.location.hostname);
   // deploy-live.sh läser raden nedan: en sida per adress. track() byter bara till en adress som står här.
