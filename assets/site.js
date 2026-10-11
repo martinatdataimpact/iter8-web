@@ -189,18 +189,26 @@
   function paint(c) { return c.indexOf('--') === 0 ? 'var(' + c + ')' : c; }
   function SMap(p) {
     var b = p.block, w = b.box[0], legs = b.legs || [], groups = b.groups || [], top = b.top;
+    var areas = b.areas || [], points = b.points || [];
     var lw = top ? top.label.length * 13 + 36 : 0;
     var lx = top ? Math.max(8, Math.min(w - lw - 8, top.x - lw / 2)) : 0;
     var ly = top ? (top.y > 130 ? top.y - 110 : top.y + 66) : 0;
     return h('figure', { className: 'kmap' },
       h('svg', { viewBox: '0 0 ' + w + ' ' + b.box[1], role: 'img', 'aria-label': p.label || 'Karta' },
         b.base && h('path', { className: 'kmap__base', d: b.base }),
+        areas.map(function (g, i) {
+          return h('path', { key: 'a' + i, className: 'kmap__area', d: g.d, style: { fill: paint(g.c), stroke: paint(g.c), animationDelay: (i * 30) + 'ms' } });
+        }),
         groups.map(function (g, i) {
           return h('path', { key: 'g' + i, className: 'kmap__group', d: g.d, style: { stroke: paint(g.c), animationDelay: (i * 140) + 'ms' } });
         }),
         legs.map(function (g, i) {
           return h('path', { key: i, d: g.d, pathLength: 1, className: 'kmap__leg' + (g.thin ? ' is-thin' : '') + (b.dots ? ' is-dot' : ''),
             style: { stroke: paint(g.c), animationDelay: (i * DRAW_STEP_MS) + 'ms' } }, g.tip && h('title', null, g.tip));
+        }),
+        points.map(function (g, i) {
+          return h('circle', { key: 'p' + i, className: 'kmap__point', cx: g.x, cy: g.y, r: g.r * 1.3, style: { fill: paint(g.c), animationDelay: (areas.length * 30 + i * 25) + 'ms' } },
+            g.tip && h('title', null, g.tip));
         }),
         top && h('g', { className: 'kmap__top', style: { animationDelay: (legs.length * DRAW_STEP_MS + 700) + 'ms' } },
           h('circle', { cx: top.x, cy: top.y, r: 16 }),
@@ -241,6 +249,7 @@
       if (b.t === 'h') return h('h3', { key: i, className: 'blk-h' }, b.text);
       if (b.t === 'p') return h('p', { key: i, className: 'blk-p' }, b.text);
       if (b.t === 'lead') return h('p', { key: i, className: 'blk-lead' }, b.text);
+      if (b.t === 'kpis') return h('div', { key: i, className: 'fk__kpi' }, b.items.map(function (k) { return h(I8.KpiTile, { key: k.label, label: k.label, value: k.value, unit: k.unit, raised: true }); }));
       if (b.t === 'table') return h(Table, { key: i, caption: b.caption, columns: b.columns, rows: b.rows });
       if (b.t === 'chart') return h('figure', { key: i, className: 'fig' }, b.title && h('figcaption', { className: 'fig__t' }, b.title), h(EChart, { option: b.option, height: b.height, dec: b.dec }));
       if (b.t === 'smap') return h(SMap, { key: i, block: b, label: p.label });
@@ -391,14 +400,14 @@
           h('span', { className: 'overline' }, 'Om iter8'),
           h('button', { ref: closeRef, type: 'button', className: 'i8 i8-btn i8-btn--ghost i8-btn--sm', onClick: p.onClose }, 'Stäng')),
         h('div', { className: 'about__body' },
-          h('h2', { className: 'about__title', id: 'about-title' }, 'Vi bygger bryggan mellan komplex rådata och ', h('em', null, 'framtidens trafik'), '.'),
-          h('p', null, 'Vårt mål är att få saker att hända i verkligheten. Lasse gör data till beslut: han hittar problemet, föreslår åtgärden, tar fram underlaget och följer upp att det verkade.'),
+          h('h2', { className: 'about__title', id: 'about-title' }, 'Vårt mål är att få saker att hända i ', h('em', null, 'verkligheten'), '.'),
+          h('p', null, 'Lasse gör data till beslut: han hittar problemet, föreslår åtgärden, tar fram underlaget och följer upp att det verkade.'),
           h('ul', { className: 'about__points' },
-            h('li', null, h('b', null, 'Begripligt.'), ' Rådata blir kartor, tabeller och svar du förstår direkt. Ingen ska behöva vara analytiker för att se var problemen finns.'),
+            h('li', null, h('b', null, 'Begripligt.'), ' Rådata blir kartor, tabeller och svar du förstår direkt.'),
             h('li', null, h('b', null, 'Agerbart.'), ' Vi stannar inte vid diagram. Lasse föreslår vad ni kan göra, och var det gör störst skillnad.'),
             h('li', null, h('b', null, 'I framkant.'), ' Vi bygger vidare hela tiden. Ni får den nyaste tekniken utan att byta system.')),
-          h('p', { className: 'about__loop' }, 'Namnet ”iter8” har två rötter. Iter är latin för väg. Iterate är att göra om: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
-          h('p', { className: 'about__loop' }, 'Och ”Lasse” då? Det var AI:ns första förslag på en rutinerad chaufför. 🤷'),
+          h('p', { className: 'about__loop' }, 'Namnet ', h('em', null, 'iter8'), ' har två rötter. Iter är latin för väg. Iterate är att göra om: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
+          h('p', { className: 'about__loop' }, 'Och ', h('em', null, 'Lasse'), ' då? Det var AI:ns första förslag på en rutinerad chaufför. 🤷'),
           h('h3', { className: 'about__h' }, 'Grundarna'),
           h('p', null, 'Eva-Marie Wenehed och Martin Bergström har byggt och drivit analysverktyg för svensk kollektivtrafik sedan 2019, hos regioner, städer, operatörer och akademi i hela landet. iter8 grundades 2026.'),
           h('p', null, 'Produkten har formats tillsammans med en referensgrupp av ett 30-tal branschkollegor från ett 10-tal organisationer.'),

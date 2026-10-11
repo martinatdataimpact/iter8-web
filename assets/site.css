@@ -119,6 +119,8 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .kmap__leg { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
   stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; animation: kmap-draw 900ms cubic-bezier(.2,.7,.2,1) both; }
 .kmap__leg.is-thin { stroke-width: 3; }
+.kmap__area { fill-opacity: .22; stroke-width: 1; stroke-opacity: .5; vector-effect: non-scaling-stroke; opacity: 0; animation: kmap-in 600ms ease both; }
+.kmap__point { stroke: var(--surface-paper); stroke-width: 1.5; vector-effect: non-scaling-stroke; opacity: 0; animation: kmap-in 500ms ease both; }
 .kmap__leg.is-dot { stroke-width: 8; stroke-dasharray: none; stroke-dashoffset: 0; animation: kmap-pop 500ms ease both; }
 @keyframes kmap-draw { from { stroke-dashoffset: 1; opacity: 0; } 15% { opacity: .9; } to { stroke-dashoffset: 0; opacity: .9; } }
 @keyframes kmap-pop { from { opacity: 0; } to { opacity: .95; } }
@@ -303,6 +305,7 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 @media (prefers-reduced-motion: reduce) {
   .room, .work { transition: none; }
   .kmap__leg, .kmap__group { animation: none; stroke-dashoffset: 0; opacity: .9; }
+  .kmap__area, .kmap__point { animation: none; opacity: 1; }
   .kmap__top, .again { animation: none; opacity: 1; }
   .about, .about__sheet { animation: none; }
   .curtain { animation: curtain-fade 400ms ease 1800ms both; }
