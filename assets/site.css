@@ -1,0 +1,310 @@
+/* Lanseringswebben. Ramen är app2:s (app2/src/app.css): samma rum, växlare, meny och
+   samtal, så att webben och appen ser ut som samma sak. Bara designsystemets tokens;
+   komponenterna kommer ur designsystemet. */
+html, body, #app { height: 100%; }
+/* Sidan rullar aldrig; bara samtalet (och det ytan bredvid visar) gör det. */
+html, body { overflow: hidden; overscroll-behavior: none; }
+body { margin: 0; background: var(--surface-app); color: var(--ink); font-family: var(--font-sans); }
+
+.page { position: relative; height: 100dvh; display: flex; flex-direction: column; --bar: 56px; --foot: 32px; }   /* --foot: marginalen i nederkant, där sidfoten står */
+
+/* Toppraden: iter8:s symbol till vänster, inloggning och visning till höger. */
+.top { position: absolute; top: 0; right: var(--space-5); z-index: 2; height: var(--bar); display: flex; align-items: center; gap: var(--space-2); }
+.top__known { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); margin-right: calc(-1 * var(--space-1)); }
+.top__home { display: flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+.top__symbol { height: 12px; width: auto; margin-left: 11px; }
+.top__symbol--dark, [data-theme=dark] .top__symbol--light { display: none; }
+[data-theme=dark] .top__symbol--dark { display: block; }
+
+/* Rummet: samtalet, och ytan som glider in när svaret behöver den (5/12 och 7/12). */
+.room { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 0 minmax(0, 0fr);
+  gap: 0; padding: 0 0 0 var(--space-5);
+  transition: grid-template-columns 700ms cubic-bezier(.2,.7,.2,1), gap 700ms cubic-bezier(.2,.7,.2,1); }
+.room:not(.room--split) { padding-right: var(--space-5); }
+.room--dragging { transition: none; cursor: col-resize; user-select: none; }
+.room--dragging .work { transition: none; }
+/* Avdelaren mellan samtalet och ytan, och mellan menyn och det den öppnar. */
+.divider { position: relative; min-width: 0; cursor: col-resize; touch-action: none; }
+.divider--off { pointer-events: none; }
+.divider__grip { position: absolute; top: 50%; left: 50%; width: 4px; height: 40px; transform: translate(-50%, -50%);
+  border-radius: var(--radius-pill); background: var(--line); transition: background var(--duration-fast); }
+.divider--off .divider__grip { display: none; }
+.divider:hover .divider__grip, .room--dragging .divider__grip { background: var(--line-strong); }
+.divider:focus-visible { outline: none; }
+.divider:focus-visible .divider__grip { background: var(--focus); box-shadow: 0 0 0 2px var(--focus); }
+
+.chat { min-height: 0; min-width: 0; display: flex; flex-direction: column; }
+.chat__scroll { flex: 1; min-height: 0; overflow-y: auto; }
+.chat__col { max-width: var(--chat-width, 760px); margin: 0 auto; padding: var(--space-6) 0 var(--space-4);
+  display: flex; flex-direction: column; gap: var(--space-6); }
+.room--split .chat__col { max-width: 100%; padding-top: 32px; }
+
+.intro { display: flex; flex-direction: column; gap: var(--space-7); padding-top: var(--space-6); }
+/* Taglinens roterande ord står alltid på egen rad, så raderna ovanför och under aldrig flyttar sig. */
+.i8-tagline__word { display: block; white-space: nowrap; }
+.turn { display: flex; flex-direction: column; gap: var(--space-4); }
+/* Senaste frågan står överst och svaret växer nedåt: sista turen fyller rutan. */
+.turn:last-child { min-height: calc(100dvh - var(--bar) - 190px); }
+.answer { display: flex; flex-direction: column; }
+.answer__note { margin-top: var(--space-2); color: var(--ink-muted); font-size: 13px; line-height: 18px; }
+.i8-msg__text, .i8-msg__text h3, .i8-msg__text h4, .i8-msg__h { font-size: 15px; line-height: 22px; }
+.chat .i8-msg--lasse > :not(.i8-mark) { margin-left: var(--space-5); }
+/* Svarets text: luft mellan stycken, punktlistor med vanliga punkter, lagom radlängd. */
+.answer { gap: var(--space-3); max-width: var(--measure-chat, 120ch); }
+.answer p { margin: 0; }
+.answer ul { margin: 0; padding-left: 20px; list-style: disc; display: flex; flex-direction: column; gap: var(--space-2); }
+.answer ul > li { padding-left: 2px; }
+.answer ul > li::before { content: none; }
+.answer ul > li::marker { color: var(--ink-muted); }
+
+.composer { max-width: var(--chat-width, 760px); width: 100%; margin: 0 auto; padding-top: var(--space-3);
+  display: flex; flex-direction: column; gap: var(--space-2); }
+.room--split .composer { max-width: 100%; }
+.composer--landing { padding-top: var(--space-6); }
+.i8-composer textarea:focus-visible { outline: none; }
+
+/* Sidfoten: bolaget och Om oss, alltid längst ned, i marginalen under rummet. Liten och tyst. */
+.foot { position: absolute; left: 50%; bottom: 0; z-index: 1; transform: translateX(-50%); height: var(--foot); border: 0; background: none; padding: 0 var(--space-2);
+  cursor: pointer; font: 400 11px/16px var(--font-sans); color: var(--ink-muted); white-space: nowrap; }
+.foot:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+.foot:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: var(--radius-sm); }
+
+/* Arbetsstegen, hopfällda till en rad när svaret står där. */
+.steps-done { align-self: flex-start; margin-bottom: var(--space-1); }
+.steps-done summary { cursor: pointer; list-style: none; display: inline-flex; align-items: center; gap: var(--space-2);
+  color: var(--ink-muted); font-size: 13px; line-height: 18px; }
+.steps-done summary::-webkit-details-marker { display: none; }
+.steps-done summary::before { content: "▸"; font-size: 10px; }
+.steps-done[open] summary::before { content: "▾"; }
+.steps-done summary:hover { color: var(--ink); }
+.steps-done summary:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: var(--radius-sm); }
+.steps-done .i8-msg__steps { margin-top: var(--space-2); }
+.steps-done .i8-msg__steps > li { padding-left: 0; }
+.steps-done .i8-msg__steps > li::before { content: none; }
+.i8-msg__step.is-done .i8-msg__step-ico::after { transform: translate(0.56px, 0.38px) rotate(45deg); }
+
+/* Ytan bredvid samtalet: en ram med raka kanter, från toppraden och ned. */
+.work { min-width: 0; min-height: 0; display: flex; flex-direction: column;
+  opacity: 0; transform: translateX(24px); transition: opacity 500ms ease 200ms, transform 700ms cubic-bezier(.2,.7,.2,1); }
+.room--split .work { opacity: 1; transform: none; padding: var(--bar) var(--space-5) var(--foot) 0; }
+.room:not(.room--split) .work { visibility: hidden; transition: opacity 300ms ease, transform 500ms ease, visibility 0s linear 500ms; }
+.work .i8-shared { flex: 1; min-height: 0; }
+.work .i8-shared--framed { border-width: var(--line-hair); }
+.work .i8-shared--framed .i8-shared__head { padding: 12px 16px 12px 24px; min-height: 0; }
+.work .i8-shared--framed .i8-shared__head .i8-btn { height: auto; min-height: 0; padding-block: 0; line-height: 18px; }
+.work .i8-shared__body { flex: 1; min-height: 0; overflow-y: auto; container-type: inline-size; }
+/* Ytans block behåller sin höjd och ytan rullar; annars trycks en tabell ihop till ingenting. */
+.work .i8-shared__body > * { flex-shrink: 0; }
+.work__bar { display: flex; align-items: center; gap: 10px; padding: 12px 16px 12px 24px; border-bottom: var(--line-hair) solid var(--line); }
+.work__who { margin-right: auto; display: flex; align-items: center; gap: var(--space-2); font: 400 13px/18px var(--font-sans); color: var(--ink-muted); min-width: 0; }
+.work__who b { font-weight: 600; color: var(--primary); }
+.work__scroll { flex: 1; min-height: 0; overflow-y: auto; padding: 28px; }
+
+/* Vänsterkolumnen: toppraden och samtalet. */
+.leftcol { display: flex; flex-direction: column; min-height: 0; min-width: 0; padding-bottom: var(--foot); }
+.leftcol > .chat { flex: 1; }
+.modebar { box-sizing: border-box; height: var(--bar); display: flex; align-items: center; justify-content: flex-start; gap: 10px;
+  white-space: nowrap; font: 400 13px/18px var(--font-sans); }
+.mode__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); flex: none; }
+.room--split .i8-tagline { font-size: 40px; }
+.room--split .intro .i8-mark { font-size: 18px; }
+
+/* Kartan: banor utan baskarta, ritade en i taget. */
+.kmap { margin: 0; display: flex; flex-direction: column; gap: var(--space-4); }
+.kmap__sub { margin: 0; color: var(--ink-muted); }
+.kmap svg { display: block; width: 100%; height: auto; max-height: 62dvh; overflow: visible; }
+.kmap__base { fill: none; stroke: var(--line-strong); stroke-width: 1; opacity: .7; vector-effect: non-scaling-stroke; }
+.kmap__group { fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  opacity: 0; animation: kmap-in 700ms ease both; }
+.kmap__leg { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1; stroke-dashoffset: 1; opacity: 0; animation: kmap-draw 900ms cubic-bezier(.2,.7,.2,1) both; }
+.kmap__leg.is-thin { stroke-width: 3; }
+.kmap__leg.is-dot { stroke-width: 8; stroke-dasharray: none; stroke-dashoffset: 0; animation: kmap-pop 500ms ease both; }
+@keyframes kmap-draw { from { stroke-dashoffset: 1; opacity: 0; } 15% { opacity: .9; } to { stroke-dashoffset: 0; opacity: .9; } }
+@keyframes kmap-pop { from { opacity: 0; } to { opacity: .95; } }
+.kmap__top { opacity: 0; animation: kmap-in 600ms ease both; }
+.kmap__top circle, .kmap__top path { fill: none; stroke: var(--ink); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
+.kmap__top rect { fill: var(--surface-paper); stroke: var(--line-strong); stroke-width: 1; vector-effect: non-scaling-stroke; }
+.kmap__top text { font: 600 24px var(--font-sans); fill: var(--ink); }
+@keyframes kmap-in { to { opacity: 1; } }
+.kmap__legend { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); margin: 0; padding: 0; list-style: none;
+  font: 400 13px/18px var(--font-sans); color: var(--ink-muted); }
+.kmap__legend li { display: inline-flex; align-items: center; gap: var(--space-2); }
+.kmap__legend i { width: 18px; height: 4px; border-radius: var(--radius-pill); }
+.kmap__legend b { font-weight: 600; color: var(--ink); }
+.kmap__note { margin: 0; color: var(--ink-muted); font-size: 13px; line-height: 18px; }
+
+/* Svarets block: rubriker, stycken, diagram, tabeller. I samtalet står de indragna som svaret. */
+.blocks { display: flex; flex-direction: column; gap: var(--space-4); margin-left: var(--space-5); min-width: 0; }
+.blocks--card { padding: var(--space-4); background: var(--surface-paper); border: var(--line-hair) solid var(--line); border-radius: var(--radius-lg); }
+.blk-h { margin: var(--space-3) 0 0; font: 600 16px/22px var(--font-sans); color: var(--primary); }
+.blk-p { margin: 0; color: var(--ink-muted); font-size: 13px; line-height: 18px; max-width: var(--measure); }
+.blk-lead { margin: 0; font-weight: 600; }
+.fig { margin: 0; min-width: 0; }
+.fig__t { margin: 0 0 var(--space-2); font: 600 13px/16px var(--font-sans); color: var(--ink); }
+.echart { width: 100%; }
+.tablebox { max-width: 100%; overflow-x: auto; }
+.tablebox .i8-table { margin: 0; }
+.tablebox .i8-table th, .tablebox .i8-table td { font-size: 13px; line-height: 18px; padding: var(--space-1) var(--space-2); white-space: nowrap; }
+.tablebox .i8-table td { font-variant-numeric: tabular-nums; }
+.tablebox .i8-table th { white-space: normal; vertical-align: bottom; }
+.tablebox .i8-table .num { text-align: right; }
+.lt { display: inline-flex; align-items: center; gap: 6px; }
+.lt::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--l); }
+
+/* Framkomlighetsverktyget: listan med platser och den valdas dygn. */
+.fk { display: grid; grid-template-columns: minmax(200px, 260px) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.fk__list { display: flex; flex-direction: column; gap: 2px; }
+.fk__item { display: flex; align-items: center; gap: var(--space-3); border: 0; background: none; text-align: left; cursor: pointer;
+  padding: 8px 10px; border-radius: var(--radius-md); font: 400 14px/18px var(--font-sans); color: var(--ink); }
+.fk__item:hover { background: var(--surface-raised); }
+.fk__item.is-on { background: var(--sage-soft); box-shadow: inset var(--line-bold) 0 0 var(--sage); }
+.fk__nr { width: 20px; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+.fk__name { flex: 1; min-width: 0; display: flex; flex-direction: column; font-weight: 600; }
+.fk__name small, .fk__min small { font-weight: 400; font-size: 11px; color: var(--ink-muted); }
+.fk__min { display: flex; flex-direction: column; align-items: flex-end; font-weight: 500; font-variant-numeric: tabular-nums; }
+.fk__detail { display: flex; flex-direction: column; gap: var(--space-4); min-width: 0; }
+.fk__kpi { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--space-3); }
+.fk__kpi > * { min-width: 0; }
+@container (max-width: 640px) { .fk { grid-template-columns: 1fr; } }
+
+/* Rutan: färdiga frågor som val. Den ser ut som appens inmatningsruta, men texten i den
+   skrivs av sidan och går inte att ändra; den egna frågan har ett eget fält. */
+.askbox { display: flex; flex-direction: column; gap: var(--space-3); padding: var(--space-4) var(--space-4) var(--space-3);
+  background: var(--surface-paper); border: var(--line-hair) solid var(--line-strong); border-radius: var(--radius-lg); }
+.askbox--landing { padding: var(--space-5) var(--space-5) var(--space-4); gap: var(--space-4); }
+.askbox__choices { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.askbox__chip { border: var(--line-hair) solid var(--line-strong); background: var(--surface-app); color: var(--ink); cursor: pointer;
+  padding: 8px 14px; border-radius: var(--radius-md); font: 600 14px/18px var(--font-sans); text-align: left;
+  transition: background var(--duration-fast) ease, border-color var(--duration-fast) ease; }
+.askbox__chip:hover { background: var(--surface-raised); border-color: var(--primary); }
+.askbox__chip:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.askbox__chip.is-cta { background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.askbox--landing .askbox__chip { padding: 12px 18px; font-size: 16px; line-height: 22px; }
+.askbox__line { min-height: 27px; font: 400 18px/27px var(--font-sans); user-select: none; cursor: default; }
+.askbox--landing .askbox__line { min-height: 30px; font-size: 20px; line-height: 30px; }
+.askbox__typed { color: var(--ink); }
+.askbox__hint { color: var(--ink-muted); font-size: 14px; }
+.askbox__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; }
+.askbox__fine { font: 400 12px/16px var(--font-sans); color: var(--ink-muted); }
+.askbox__ownlink { border: 0; background: none; padding: 0; cursor: pointer; font: 600 13px/16px var(--font-sans); color: var(--link);
+  text-decoration: underline; text-decoration-thickness: var(--line-hair); text-underline-offset: 3px; }
+.askbox__own { display: flex; align-items: center; gap: var(--space-2); }
+.askbox__input { flex: 1; min-width: 0; border: var(--line-hair) solid var(--line-strong); border-radius: var(--radius-md); background: var(--surface-app);
+  color: var(--ink); font: 400 16px/22px var(--font-sans); padding: 9px 12px; }
+.askbox__input:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 2px var(--focus); }
+.intro__lead { margin: calc(-1 * var(--space-4)) 0 0; color: var(--ink-muted); }
+/* Slutets jämförelse: dagens arbetssätt mot Lasses, en bock per rad. */
+.i8-end__stage { overflow-y: auto; }
+.i8-end__text { display: flex; flex-direction: column; gap: var(--space-2); }
+.i8-end__text p { margin: 0; }
+.i8-end__mail + .i8-end__mail { margin-top: calc(-1 * var(--space-3)); }
+.end__about { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.vs { width: 100%; max-width: 640px; border-collapse: collapse; font: 400 15px/20px var(--font-sans); }
+.vs th, .vs td { padding: 7px 12px 7px 0; text-align: left; vertical-align: middle;
+  border-bottom: var(--line-hair) solid color-mix(in srgb, var(--on-primary) 18%, transparent); }
+.vs thead th { padding-top: 0; font: 600 12px/1 var(--font-sans); letter-spacing: .08em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--on-primary) 72%, transparent); }
+.vs thead th:last-child { color: var(--sage-soft); text-align: center; }
+.vs tbody th { font-weight: 600; }
+.vs__now { color: color-mix(in srgb, var(--on-primary) 66%, transparent); }
+.vs__yes { width: 96px; text-align: center !important; padding-right: 0 !important; }
+.vs__check { display: block; margin: 0 auto; width: 20px; height: 20px; border-radius: 50%; background: var(--sage); position: relative; }
+.vs__check::after { content: ""; position: absolute; left: 7px; top: 3.5px; width: 5px; height: 10px;
+  border: solid var(--on-sage); border-width: 0 2px 2px 0; transform: rotate(45deg); }
+@media (max-width: 600px) {
+  .vs { font-size: 13px; line-height: 18px; }
+  .vs th, .vs td { padding: 6px 8px 6px 0; }
+  .vs__yes { width: 64px; }
+  .i8-end__text { font-size: 17px; line-height: 25px; }
+  .i8-end__stage { padding-top: 56px; }
+  .i8-end__inner { gap: 18px; }
+  .i8-end__foot { display: none; }          /* tabellen behöver höjden */
+}
+
+/* Sidan för en egen fråga: rubriken är en hel mening, så den sätts mindre än slutets. */
+.i8-end.own .i8-end__title { font-size: clamp(28px, 3.4vw, 44px); line-height: 1.12; max-width: 22ch; }
+
+/* Om oss: ett ark från höger, över sidan. */
+.about { position: fixed; inset: 0; z-index: 60; background: var(--overlay); display: flex; justify-content: flex-end; animation: about-fade 300ms ease both; }
+.about__sheet { width: min(520px, 100%); height: 100%; background: var(--surface-app); box-shadow: var(--shadow-overlay); display: flex; flex-direction: column;
+  animation: about-in 500ms cubic-bezier(.2,.7,.2,1) both; }
+.about__bar { display: flex; align-items: center; justify-content: space-between; padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px 32px; border-bottom: var(--line-hair) solid var(--line); }
+.about__bar .overline { color: var(--ink-muted); }
+.about__body { flex: 1; overflow-y: auto; padding: 36px 32px calc(32px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 18px; }
+.about__body p, .about__body h2, .about__body h3 { margin: 0; }
+.about__body p, .about__points li { max-width: 60ch; font-size: 16px; line-height: 25px; }
+.about__title { font: 400 36px/1.12 var(--font-serif); color: var(--primary); }
+.about__title em { font-style: italic; color: var(--sage-strong); }
+.about__points { margin: 0; padding: 18px 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; border-top: var(--line-hair) solid var(--line); }
+.about__points b { font-weight: 600; color: var(--primary); }
+.about__loop { color: var(--ink-muted); }
+.about__h { font: 700 13px/16px var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); margin-top: 12px !important; padding-top: 18px; border-top: var(--line-hair) solid var(--line); }
+.about__foot { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.about__foot img { height: 20px; width: auto; }
+.about__foot .top__symbol--dark, [data-theme=dark] .about__foot .top__symbol--light { display: none; }
+[data-theme=dark] .about__foot .top__symbol--dark { display: block; }
+.about__foot p { font-size: 13px; color: var(--ink-muted); }
+.about__foot a { color: inherit; }
+@keyframes about-fade { from { opacity: 0; } }
+@keyframes about-in { from { transform: translateX(100%); } }
+@media (max-width: 600px) { .about__body { padding-inline: 20px; } .about__bar { padding-left: 20px; } .about__title { font-size: 30px; } }
+
+/* Bokningen: en ruta ovanpå sidan (och ovanpå slutet) med kalenderns bokningsschema. */
+.book { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: var(--space-5); background: var(--overlay); }
+.book__box { width: min(100%, 980px); height: min(100%, 780px); display: flex; flex-direction: column; overflow: hidden;
+  background: var(--surface-paper); border: var(--line-hair) solid var(--line); border-radius: var(--radius-lg); box-shadow: var(--shadow-overlay); }
+.book__q { margin: 0; padding: var(--space-3) 24px; border-bottom: var(--line-hair) solid var(--line); font: 400 13px/18px var(--font-sans); color: var(--ink-muted); }
+.book__q b { font-weight: 600; color: var(--ink); }
+.book__frame { flex: 1; min-height: 0; width: 100%; border: 0; background: var(--surface-paper); }
+
+/* Efter slutet: en väg tillbaka, ovanpå ridån. */
+.again { position: fixed; top: 0; right: var(--space-5); z-index: 41; height: 56px; border: 0; background: none; cursor: pointer;
+  font: 600 13px/16px var(--font-sans); color: var(--on-primary); opacity: 0; animation: kmap-in 600ms ease 1600ms both; }
+.again:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Ridån, varje gång sidan öppnas: den liggande åttan på navy, en rad, och så går den upp. */
+.curtain { position: fixed; inset: 0; z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: clamp(32px, 6vh, 72px); padding: var(--space-5); background: var(--primary); color: var(--on-primary); cursor: pointer;
+  animation: curtain-up 1100ms cubic-bezier(.7,0,.2,1) 2700ms both; }
+.curtain.is-up { animation-delay: 0ms; }
+.curtain__eight { width: min(72vw, 980px); aspect-ratio: 2.3; background: var(--on-primary);
+  -webkit-mask: url(ds/logotyp/iter8-symbol-liggande-beige.svg) center / contain no-repeat; mask: url(ds/logotyp/iter8-symbol-liggande-beige.svg) center / contain no-repeat;
+  animation: curtain-in 900ms cubic-bezier(.2,.7,.2,1) both; }
+.curtain__line { margin: 0; text-align: center; font: 400 clamp(28px, 4vw, 48px)/1.1 var(--font-serif); letter-spacing: -0.01em;
+  animation: curtain-in 900ms cubic-bezier(.2,.7,.2,1) 500ms both; }
+.curtain__line em { font-style: italic; }
+@keyframes curtain-up { to { transform: translateY(-100%); visibility: hidden; } }
+@keyframes curtain-fade { to { opacity: 0; visibility: hidden; } }
+@keyframes curtain-in { from { opacity: 0; transform: translateY(12px); } }
+
+/* Reserven utan JS. */
+.fallback { max-width: 760px; margin: 0 auto; padding: 96px var(--space-5) 0; display: flex; flex-direction: column; gap: var(--space-5); }
+.fallback p { margin: 0; max-width: var(--measure); }
+
+@media (max-width: 900px) {
+  .room { grid-template-columns: minmax(0, 1fr) !important; padding: 0 var(--space-4); }
+  .divider { display: none; }
+  .top { right: var(--space-4); }
+  .book { padding: 0; align-items: flex-end; }
+  .book__box { height: 92dvh; border-radius: var(--radius-lg) var(--radius-lg) 0 0; border-bottom: 0; }
+  .top .i8-btn--ghost, .top__known { display: none; }           /* Logga in ger plats åt visningen */
+  .askbox__fine, .composer:not(.composer--landing) .askbox__hint { display: none; }
+  .askbox__line:has(.askbox__hint:empty) { display: none; }
+  .intro { gap: var(--space-6); padding-top: var(--space-4); }
+  .work { display: none; }                 /* på en smal skärm står ytans innehåll i samtalet */
+  .blocks { margin-left: 0; }
+  .fk { grid-template-columns: 1fr; }
+  .fk__kpi { grid-template-columns: 1fr; }
+  .askbox__own { flex-wrap: wrap; }
+  .askbox__input { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .room, .work { transition: none; }
+  .kmap__leg, .kmap__group { animation: none; stroke-dashoffset: 0; opacity: .9; }
+  .kmap__top, .again { animation: none; opacity: 1; }
+  .about, .about__sheet { animation: none; }
+  .curtain { animation: curtain-fade 400ms ease 1800ms both; }
+  .curtain__eight, .curtain__line { animation: none; }
+}

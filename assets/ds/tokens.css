@@ -1,0 +1,160 @@
+@font-face{font-family:"Instrument Sans";src:url("./fonts/instrument-sans-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url("./fonts/instrument-sans-latin-400-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url("./fonts/instrument-sans-latin-500-normal.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url("./fonts/instrument-sans-latin-600-normal.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Sans";src:url("./fonts/instrument-sans-latin-700-normal.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url("./fonts/instrument-serif-latin-400-normal.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Instrument Serif";src:url("./fonts/instrument-serif-latin-400-italic.woff2") format("woff2");font-weight:400;font-style:italic;font-display:swap}
+/* iter8 · tokens.css · genererad av scripts/build.mjs ur system/tokens.json – ändra aldrig för hand */
+:root,[data-theme=light] {
+  --surface: #eae3d5; /* Sidbakgrund. Creamy Beige i ljust tema, Dark Navy i mörkt. Det här är iter8:s grundyta – b */
+  --surface-app: #fffdf7; /* Sidbakgrund i produkten (app.iter8.se) och på webben: en kräm som nästan är vit, så att sk */
+  --surface-raised: #f4f0e8; /* Kort, paneler, tabellhuvuden och statistikrutor som ska lyfta sig lite från surface. Skilj */
+  --surface-paper: #ffffff; /* Vitt papper: diagramytor, kartor, inmatningsfält, kort på surface-app och skärmdumpar som  */
+  --line: #cfc5b2; /* Hårlinjer, tabellinjer, kortkanter, avdelare (1 px). Dekorativ – bär inte betydelse (1,3:1 */
+  --line-strong: #5c5851; /* Kanter som bär betydelse: inmatningsfält, kryssrutor, diagramaxlar. Minst 3:1 mot surface, */
+  --ink: #333333; /* Brödtext och all löptext, på surface, surface-app, surface-raised och surface-paper (≥10:1 */
+  --ink-muted: #5c5851; /* Sekundär text: bildtexter, metadata, axeletiketter, källhänvisningar. På surface, surface- */
+  --primary: #21303e; /* Rubriker, ordmärket, primära knappar och den tyngsta serien i ett diagram. Dark Navy i lju */
+  --on-primary: #eae3d5; /* Text och ikoner på en primary-fyllning (primär knapp, mörkt band). 10,6:1. */
+  --sage: #4a7a61; /* Accent: aktiv länk/flik, accentknapp, markering i kartor, 'i tid' i punktlighet. Som TEXT  */
+  --sage-strong: #3a6250; /* Salviegrön för liten text och länkar på surface, surface-app, surface-raised, surface-pape */
+  --sage-soft: #d5e0d6; /* Tonad bakgrund bakom sage-strong-text: informationsrutor, markerade tabellrader, 'i tid'-e */
+  --on-sage: #ffffff; /* Text på en sage-fyllning: accentknappen, 'i tid'-segment i diagram. 4,9:1 i ljust tema – a */
+  --ochre: #c98a3a; /* Varm signalfärg: band/rosett i lanseringsfilmer, 'tidig' i punktlighet, markerad åtgärd på */
+  --ochre-strong: #8a5a1c; /* Ockra för liten text på surface, surface-app, surface-raised och ochre-soft (4,6:1 på beig */
+  --ochre-soft: #f0dfc4; /* Tonad bakgrund bakom ochre-strong-text: varningsruta, 'tidig'-etikett. */
+  --on-ochre: #21303e; /* Text på en ochre-fyllning (bandet i filmerna). Navy, inte vitt – vitt på ockra håller inte */
+  --brick: #a8433a; /* Avvikelse: 'sen' i punktlighet, fel, tappad tid, försämring. Som text på surface, surface- */
+  --brick-soft: #f4dcd6; /* Tonad bakgrund bakom brick-text: felruta, 'sen'-etikett. */
+  --on-brick: #ffffff; /* Text på en brick-fyllning. 6:1. */
+  --slate: #5b7d99; /* Fjärde diagramfärg (blågrå), tåg/annan trafik i kartor. Fyllning eller stor text; liten te */
+  --taupe: #8c7f6b; /* Femte diagramfärg och 'övrigt/referens'. Fyllning eller stor text. */
+  --link: var(--sage-strong); /* Länkar i löptext – alias av sage-strong. Understruken, 1 px, understrykningen i line-stron */
+  --focus: var(--sage-strong); /* Fokusring: 2 px solid, 2 px offset. Alias av sage-strong (≥3:1 på alla ytor i båda teman u */
+  --overlay: #21303e99; /* Skärm bakom dialoger och menyer. Navy med 60 % (ljust) / 70 % (mörkt) opacitet. */
+  --data-tidig: var(--ochre); /* Punktlighet: tur som avgått för tidigt. Alias av ochre. Etikettera alltid segmentet. */
+  --data-i-tid: var(--sage); /* Punktlighet: tur inom marginalen. Alias av sage. */
+  --data-sen: var(--brick); /* Punktlighet: försenad tur. Alias av brick. */
+  --cat-1: var(--primary); /* Kategorisk diagramserie 1 (den viktigaste serien, t.ex. den egna linjen). Alias av primary */
+  --cat-2: var(--sage); /* Kategorisk diagramserie 2. Alias av sage. */
+  --cat-3: var(--ochre); /* Kategorisk diagramserie 3. Alias av ochre. */
+  --cat-4: var(--slate); /* Kategorisk diagramserie 4. Alias av slate. */
+  --cat-5: var(--brick); /* Kategorisk diagramserie 5 – bara om den inte samtidigt betyder 'sen/fel' i samma bild. Ali */
+  --cat-6: var(--taupe); /* Kategorisk diagramserie 6. Fler än sex serier: gruppera till 'övrigt'. Alias av taupe. */
+  --seq-1: #dfe4e3; /* Sekventiell skala steg 1 (lägst) – kartor och värmekartor, från ljus till navy. */
+  --seq-2: #b2c2bf; /* Sekventiell skala steg 2. */
+  --seq-3: #7f9a9e; /* Sekventiell skala steg 3 (tillägg: interpolerat mellan seq-2 och primary). */
+  --seq-4: #4d6577; /* Sekventiell skala steg 4 (tillägg). */
+  --seq-5: #21303e; /* Sekventiell skala steg 5 (högst) – navy i ljust tema, ljus i mörkt (tillägg). */
+  --speed-1: var(--sage-strong); /* Hastighetsskalan i segmentkartor, steg 1 = snabbast/fri framkomlighet. Alias av sage-stron */
+  --speed-2: var(--sage); /* Hastighetsskalan steg 2. Alias av sage. */
+  --speed-3: var(--ochre); /* Hastighetsskalan steg 3 = reducerad hastighet. Alias av ochre. */
+  --speed-4: #b86436; /* Hastighetsskalan steg 4 (tillägg: interpolerat mellan ochre och brick). */
+  --speed-5: var(--brick); /* Hastighetsskalan steg 5 = långsammast/kö. Alias av brick. Legend med ord ('fri' … 'kö') al */
+  --div-neg: var(--brick); /* Divergerande skala, negativ pol (försämring, tappad tid). Mitten = seq-1. */
+  --div-pos: var(--sage); /* Divergerande skala, positiv pol (förbättring, tidsvinst). */
+  --shadow-none: none; /* Kort, paneler och tabeller: ingen skugga, 1 px line i stället. */
+  --shadow-overlay: 0 8px 24px -8px #21303e40, 0 1px 0 #cfc5b2; /* Menyer, popovers, tooltips, dialoger – det enda som får skugga. */
+  --space-1: 4px; /* Mellan ikon och text, inuti etiketter. */
+  --space-2: 8px; /* Mellan etikett och fält, mellan chips, knappens vertikala padding. */
+  --space-3: 12px; /* Knappens horisontella padding, tabellcellens padding, mellan rader i en lista. */
+  --space-4: 16px; /* Kortets padding (kompakt), mellan kort i ett flöde, formulärrader. */
+  --space-5: 24px; /* Kortets padding (standard), panelens padding, mellan sektioner i ett kort. */
+  --space-6: 32px; /* Mellan block på en sida, sidans padding i appen. */
+  --space-7: 48px; /* Mellan sektioner på webben, slidens innermarginal. */
+  --space-8: 64px; /* Sektionsavstånd på webben, rapportens sidmarginal (A4). */
+  --space-9: 96px; /* Hero-luft, mellan stora sektioner på webben. */
+  --radius-sm: 4px; /* Etiketter, taggar, tabellcellers markering, kryssrutor. */
+  --radius-md: 6px; /* Knappar, fält, chips, menyalternativ. */
+  --radius-lg: 10px; /* Kort, paneler, dialoger, insiktskort, bilder. */
+  --radius-pill: 999px; /* Endast statusetiketter (tidig / i tid / sen) och filterchips. Aldrig knappar. */
+  --line-hair: 1px; /* Kortkant, tabellinje, avdelare, understruken länk – alltid i line. */
+  --line-bold: 2px; /* Fokusring, vald flik, fältets kant vid fokus, diagrammets huvudserie. */
+  --measure: 68ch; /* Största textbredd för body och body-lg. */
+  --measure-chat: 120ch; /* Största radlängd i Lasses svar i chatten (ca 120 tecken). */
+  --chat-width: 80vw; /* Samtalets och inmatningsrutans bredd på webben när den delade vyn är stängd. Hela bredden  */
+  --content-max: 1200px; /* Webbens och appens innehållsbredd. Kartor och tabeller får gå bredare. */
+  --slide-w: 1920px; /* Slide-mallens bredd (16:9, 1920×1080). Skalas ned, aldrig upp. */
+  --page-a4: 794px; /* Rapportsidans bredd vid 96 dpi (210 mm). */
+  --duration-fast: 120ms; /* Hover, fokus, chip-växling. */
+  --duration-base: 200ms; /* Meny, popover, flikbyte, kortets in-tonande. */
+  --duration-slow: 320ms; /* Dialog, panel som skjuts in, kartans flygning. */
+  --rotate-hold: 4500ms; /* Taglinen: hur länge första ordet (kollektivtrafik) står innan rotationen börjar. */
+  --rotate-every: 3200ms; /* Taglinen: tid mellan varje nytt ord. */
+  --rotate-fade: 1100ms; /* Taglinen: intoningen av varje nytt ord. */
+  --end-pause: 1650ms; /* Slutet: hur länge Lasses sista svar står innan samtalet tonar bort. */
+  --end-curtain: 1000ms; /* Slutet: den navy ridån som sveper upp nedifrån. */
+  --font-sans: "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-mono: "SF Mono", Menlo, Consolas, monospace;
+}
+[data-theme=dark] {
+  --surface: #21303e; /* Sidbakgrund. Creamy Beige i ljust tema, Dark Navy i mörkt. Det här är iter8:s grundyta – b */
+  --surface-app: #1b2833; /* Sidbakgrund i produkten (app.iter8.se) och på webben: en kräm som nästan är vit, så att sk */
+  --surface-raised: #2c3f50; /* Kort, paneler, tabellhuvuden och statistikrutor som ska lyfta sig lite från surface. Skilj */
+  --surface-paper: #16222c; /* Vitt papper: diagramytor, kartor, inmatningsfält, kort på surface-app och skärmdumpar som  */
+  --line: #3d5064; /* Hårlinjer, tabellinjer, kortkanter, avdelare (1 px). Dekorativ – bär inte betydelse (1,3:1 */
+  --line-strong: #b3bcc4; /* Kanter som bär betydelse: inmatningsfält, kryssrutor, diagramaxlar. Minst 3:1 mot surface, */
+  --ink: #eae3d5; /* Brödtext och all löptext, på surface, surface-app, surface-raised och surface-paper (≥10:1 */
+  --ink-muted: #b3bcc4; /* Sekundär text: bildtexter, metadata, axeletiketter, källhänvisningar. På surface, surface- */
+  --primary: #eae3d5; /* Rubriker, ordmärket, primära knappar och den tyngsta serien i ett diagram. Dark Navy i lju */
+  --on-primary: #21303e; /* Text och ikoner på en primary-fyllning (primär knapp, mörkt band). 10,6:1. */
+  --sage: #88b89c; /* Accent: aktiv länk/flik, accentknapp, markering i kartor, 'i tid' i punktlighet. Som TEXT  */
+  --sage-strong: #a5cdb5; /* Salviegrön för liten text och länkar på surface, surface-app, surface-raised, surface-pape */
+  --sage-soft: #2f4a3c; /* Tonad bakgrund bakom sage-strong-text: informationsrutor, markerade tabellrader, 'i tid'-e */
+  --on-sage: #21303e; /* Text på en sage-fyllning: accentknappen, 'i tid'-segment i diagram. 4,9:1 i ljust tema – a */
+  --ochre: #e0a458; /* Varm signalfärg: band/rosett i lanseringsfilmer, 'tidig' i punktlighet, markerad åtgärd på */
+  --ochre-strong: #f0c185; /* Ockra för liten text på surface, surface-app, surface-raised och ochre-soft (4,6:1 på beig */
+  --ochre-soft: #4a3617; /* Tonad bakgrund bakom ochre-strong-text: varningsruta, 'tidig'-etikett. */
+  --on-ochre: #21303e; /* Text på en ochre-fyllning (bandet i filmerna). Navy, inte vitt – vitt på ockra håller inte */
+  --brick: #e07a6e; /* Avvikelse: 'sen' i punktlighet, fel, tappad tid, försämring. Som text på surface, surface- */
+  --brick-soft: #4d2320; /* Tonad bakgrund bakom brick-text: felruta, 'sen'-etikett. */
+  --on-brick: #21303e; /* Text på en brick-fyllning. 6:1. */
+  --slate: #8fb0c9; /* Fjärde diagramfärg (blågrå), tåg/annan trafik i kartor. Fyllning eller stor text; liten te */
+  --taupe: #a89b87; /* Femte diagramfärg och 'övrigt/referens'. Fyllning eller stor text. */
+  --link: var(--sage-strong); /* Länkar i löptext – alias av sage-strong. Understruken, 1 px, understrykningen i line-stron */
+  --focus: var(--sage-strong); /* Fokusring: 2 px solid, 2 px offset. Alias av sage-strong (≥3:1 på alla ytor i båda teman u */
+  --overlay: #0b141bb3; /* Skärm bakom dialoger och menyer. Navy med 60 % (ljust) / 70 % (mörkt) opacitet. */
+  --data-tidig: var(--ochre); /* Punktlighet: tur som avgått för tidigt. Alias av ochre. Etikettera alltid segmentet. */
+  --data-i-tid: var(--sage); /* Punktlighet: tur inom marginalen. Alias av sage. */
+  --data-sen: var(--brick); /* Punktlighet: försenad tur. Alias av brick. */
+  --cat-1: var(--primary); /* Kategorisk diagramserie 1 (den viktigaste serien, t.ex. den egna linjen). Alias av primary */
+  --cat-2: var(--sage); /* Kategorisk diagramserie 2. Alias av sage. */
+  --cat-3: var(--ochre); /* Kategorisk diagramserie 3. Alias av ochre. */
+  --cat-4: var(--slate); /* Kategorisk diagramserie 4. Alias av slate. */
+  --cat-5: var(--brick); /* Kategorisk diagramserie 5 – bara om den inte samtidigt betyder 'sen/fel' i samma bild. Ali */
+  --cat-6: var(--taupe); /* Kategorisk diagramserie 6. Fler än sex serier: gruppera till 'övrigt'. Alias av taupe. */
+  --seq-1: #3a4d5e; /* Sekventiell skala steg 1 (lägst) – kartor och värmekartor, från ljus till navy. */
+  --seq-2: #54707f; /* Sekventiell skala steg 2. */
+  --seq-3: #7a94a0; /* Sekventiell skala steg 3 (tillägg: interpolerat mellan seq-2 och primary). */
+  --seq-4: #a8bcc4; /* Sekventiell skala steg 4 (tillägg). */
+  --seq-5: #dfe4e3; /* Sekventiell skala steg 5 (högst) – navy i ljust tema, ljus i mörkt (tillägg). */
+  --speed-1: var(--sage-strong); /* Hastighetsskalan i segmentkartor, steg 1 = snabbast/fri framkomlighet. Alias av sage-stron */
+  --speed-2: var(--sage); /* Hastighetsskalan steg 2. Alias av sage. */
+  --speed-3: var(--ochre); /* Hastighetsskalan steg 3 = reducerad hastighet. Alias av ochre. */
+  --speed-4: #e0906a; /* Hastighetsskalan steg 4 (tillägg: interpolerat mellan ochre och brick). */
+  --speed-5: var(--brick); /* Hastighetsskalan steg 5 = långsammast/kö. Alias av brick. Legend med ord ('fri' … 'kö') al */
+  --div-neg: var(--brick); /* Divergerande skala, negativ pol (försämring, tappad tid). Mitten = seq-1. */
+  --div-pos: var(--sage); /* Divergerande skala, positiv pol (förbättring, tidsvinst). */
+  --shadow-none: none; /* Kort, paneler och tabeller: ingen skugga, 1 px line i stället. */
+  --shadow-overlay: 0 8px 24px -8px #0b141bcc, 0 1px 0 #3d5064; /* Menyer, popovers, tooltips, dialoger – det enda som får skugga. */
+}
+/* Typografisk skala – klassnamn = stilnamn i designsystemet */
+.display-1 { font-family:var(--font-serif); font-size:72px; line-height:74px; font-weight:400; letter-spacing:-0.01em; } /* Taglinen på webbens landning och titelslide. Endast en per yta. Instrument Serif, aldrig f */
+.display-2 { font-family:var(--font-serif); font-size:48px; line-height:52px; font-weight:400; letter-spacing:-0.01em; } /* Sektionsrubrik på webben, sliderubrik, rapportens omslag. */
+.display-3 { font-family:var(--font-serif); font-size:32px; line-height:38px; font-weight:400; } /* Sidrubrik i appen (Start, Insikter), rapportens kapitelrubrik. Får vara kursiv för ett bet */
+.h1 { font-family:var(--font-sans); font-size:26px; line-height:32px; font-weight:700; letter-spacing:-0.01em; } /* Rubrik på en datasida i appen. En per sida. */
+.h2 { font-family:var(--font-sans); font-size:20px; line-height:26px; font-weight:700; } /* Insiktskortets titel, kortrubrik, dialogrubrik. */
+.h3 { font-family:var(--font-sans); font-size:16px; line-height:22px; font-weight:600; } /* Underrubrik i kort och paneler, tabellsektion. */
+.body-lg { font-family:var(--font-sans); font-size:18px; line-height:28px; font-weight:400; } /* Ingress på webben, lead i insiktskort, slidens brödtext. */
+.body { font-family:var(--font-sans); font-size:15px; line-height:22px; font-weight:400; } /* Standardtext i appen, i Lasse-svar och i rapporter. Måttbredd 60–70 tecken. */
+.body-sm { font-family:var(--font-sans); font-size:13px; line-height:18px; font-weight:400; } /* Hjälptext intill en siffra, tabellceller, bildtext. Aldrig under 13 px i appen. */
+.label { font-family:var(--font-sans); font-size:13px; line-height:16px; font-weight:600; letter-spacing:0.01em; } /* Fältetiketter, knapptext, flikar, tabellhuvud. */
+.overline { font-family:var(--font-sans); font-size:11px; line-height:16px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; } /* Områdestagg och prioritet på insiktskort, KPI-rubrik, versaler. Alltid i ink-muted eller e */
+.kpi { font-family:var(--font-sans); font-size:40px; line-height:44px; font-weight:500; letter-spacing:-0.02em; font-variant-numeric:tabular-nums; } /* KPI-rutans tal. Tusentalsavgränsare = mellanslag, decimal = komma. Enhet i body-sm intill. */
+.kpi-sm { font-family:var(--font-sans); font-size:24px; line-height:28px; font-weight:500; letter-spacing:-0.01em; font-variant-numeric:tabular-nums; } /* Skillnad i jämförelser (A mot B), tal i insiktskortets kropp, slide-stat. */
+.num { font-family:var(--font-sans); font-size:15px; line-height:22px; font-weight:500; font-variant-numeric:tabular-nums; } /* Tal i tabeller och tidtabellsceller: tabulära siffror, högerställda. */
+.num-sm { font-family:var(--font-sans); font-size:12px; line-height:16px; font-weight:500; font-variant-numeric:tabular-nums; } /* Axeletiketter, kartlegend, små tal i etiketter. */
+.code { font-family:var(--font-mono); font-size:13px; line-height:20px; font-weight:400; } /* Kodblock i dokumentation. Aldrig i Lasses svar och aldrig för tal i gränssnittet. */
+html { background: var(--surface-app); color: var(--ink); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
