@@ -33,7 +33,7 @@
      Det besökaren gör räknas därför som adresser: track() byter sidans adress till
      aktivitetens (activityPath), och i Cloudflare står antalet per adress under sidor.
      Varje aktivitetsadress finns också som en riktig sida (deploy-live.sh gör en kopia av
-     index.html per adress, ur ACTIVITY_PATHS, ACTIVITY_PREFIXES och trädets frågor), så att
+     index.html per adress, ur ACTIVITY_PATHS), så att
      en kopierad eller omladdad adress fungerar; sidan börjar då om på roten.
 
      Händelserna (namn → när → parametrar), och adressen de räknas under:
@@ -49,25 +49,21 @@
        about_open          Om oss öppnas                      source (footer | end)
        start_over          ”Börja om”                         answers
      Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click.
-     Adresserna: fraga-<id> (vald fråga) · auto-<id> (ställd av sidan själv) · yta-<id> ·
-     egen-fraga · egen-fraga-skickad · slut · boka-<källa> · kontakt · logga-in · om-oss ·
+     Adresserna: fraga (en vald fråga, vilken som helst) · fraga-auto (ställd av sidan själv) ·
+     yta · egen-fraga · egen-fraga-skickad · slut · boka-<källa> · kontakt · logga-in · om-oss ·
      borja-om. answer_complete och view_close räknas inte. */
   var CF_TOKEN = '239e5105f0a742e29bc77d133e828df9';  // iter8.se:s token i Cloudflare Web Analytics. Tomt = ingen mätning någonstans.
   var CF_HOSTS = /^(www\.)?iter8\.se$/;
   var CF_LIVE = !!CF_TOKEN && CF_HOSTS.test(window.location.hostname);
-  // deploy-live.sh läser de två raderna nedan: en sida per adress. track() byter bara till en adress som står här.
-  var ACTIVITY_PATHS = ['egen-fraga', 'egen-fraga-skickad', 'slut', 'boka-topp', 'boka-slut', 'boka-egen-fraga', 'boka-om-oss', 'kontakt', 'logga-in', 'om-oss', 'borja-om'];
-  var ACTIVITY_PREFIXES = ['fraga-', 'auto-', 'yta-'];
+  // deploy-live.sh läser raden nedan: en sida per adress. track() byter bara till en adress som står här.
+  var ACTIVITY_PATHS = ['fraga', 'fraga-auto', 'yta', 'egen-fraga', 'egen-fraga-skickad', 'slut', 'boka-topp', 'boka-slut', 'boka-egen-fraga', 'boka-om-oss', 'kontakt', 'logga-in', 'om-oss', 'borja-om'];
   var SOURCE = { top: 'topp', end: 'slut', own_question: 'egen-fraga', about: 'om-oss' };
   function activityPath(name, p) {
-    if (name === 'question_select') return (p.auto ? 'auto-' : 'fraga-') + p.question_id;
-    if (name === 'view_open') return 'yta-' + p.question_id;
+    if (name === 'question_select') return p.auto ? 'fraga-auto' : 'fraga';
+    if (name === 'view_open') return 'yta';
     if (name === 'booking_click') return 'boka-' + SOURCE[p.source];
     return { own_question_open: 'egen-fraga', own_question_submit: 'egen-fraga-skickad', end_view: 'slut', contact_click: 'kontakt',
       login_click: 'logga-in', about_open: 'om-oss', start_over: 'borja-om' }[name] || null;
-  }
-  function known(path) {
-    return ACTIVITY_PATHS.indexOf(path) >= 0 || ACTIVITY_PREFIXES.some(function (x) { return path.indexOf(x) === 0 && /^[a-z0-9]+$/.test(path.slice(x.length)); });
   }
   if (CF_LIVE) {
     // En aktivitetsadress som laddas direkt börjar om på roten, innan besöket räknas.
@@ -80,7 +76,7 @@
   function track(name, params) {
     if (!CF_LIVE) return;
     var path = activityPath(name, params || {});
-    if (!path || !known(path)) return;
+    if (!path || ACTIVITY_PATHS.indexOf(path) < 0) return;
     // Cloudflares skript räknar varje adressbyte där webbläsaren har Navigation API, annars bara pushState.
     try {
       if ('navigation' in window) window.history.replaceState(null, '', '/' + path);
