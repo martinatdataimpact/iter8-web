@@ -27,12 +27,16 @@
      Cloudflare räknar besöken: antal, sidvisningar, varifrån besökaren kom, land och enhet.
      Inga kakor sätts, ingenting lagras i webbläsaren och ingen besökare känns igen, så sidan
      har ingen samtyckesfråga. Skriptet laddas BARA på den skarpa sajten (CF_HOSTS); lokalt
-     laddas ingenting.
+     laddas ingenting och adressen rörs inte.
 
-     Cloudflare tar inte emot egna händelser. track() nedan är stället där sidans händelser
-     passerar, och de har ingen mottagare: track() gör ingenting. En mottagare kopplas in här.
+     Cloudflare tar inte emot egna händelser, men räknar ett adressbyte som en sidvisning.
+     Det besökaren gör räknas därför som adresser: track() byter sidans adress till
+     aktivitetens (activityPath), och i Cloudflare står antalet per adress under sidor.
+     Varje aktivitetsadress finns också som en riktig sida (deploy-live.sh gör en kopia av
+     index.html per adress, ur ACTIVITY_PATHS, ACTIVITY_PREFIXES och trädets frågor), så att
+     en kopierad eller omladdad adress fungerar; sidan börjar då om på roten.
 
-     Händelserna (namn → när → parametrar):
+     Händelserna (namn → när → parametrar), och adressen de räknas under:
        question_select     en fråga i trädet väljs            question_id, depth, auto (ställd av sidan själv)
        answer_complete     svaret har skrivits klart          question_id, seconds (från valet)
        view_open/_close    ytan bredvid öppnas/stängs         question_id, view (lasse | tool | app)
@@ -44,16 +48,45 @@
        login_click         ”Logga in”
        about_open          Om oss öppnas                      source (footer | end)
        start_over          ”Börja om”                         answers
-     Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click. */
+     Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click.
+     Adresserna: fraga-<id> (vald fråga) · auto-<id> (ställd av sidan själv) · yta-<id> ·
+     egen-fraga · egen-fraga-skickad · slut · boka-<källa> · kontakt · logga-in · om-oss ·
+     borja-om. answer_complete och view_close räknas inte. */
   var CF_TOKEN = '239e5105f0a742e29bc77d133e828df9';  // iter8.se:s token i Cloudflare Web Analytics. Tomt = ingen mätning någonstans.
   var CF_HOSTS = /^(www\.)?iter8\.se$/;
-  if (CF_TOKEN && CF_HOSTS.test(window.location.hostname)) {
+  var CF_LIVE = !!CF_TOKEN && CF_HOSTS.test(window.location.hostname);
+  // deploy-live.sh läser de två raderna nedan: en sida per adress. track() byter bara till en adress som står här.
+  var ACTIVITY_PATHS = ['egen-fraga', 'egen-fraga-skickad', 'slut', 'boka-topp', 'boka-slut', 'boka-egen-fraga', 'boka-om-oss', 'kontakt', 'logga-in', 'om-oss', 'borja-om'];
+  var ACTIVITY_PREFIXES = ['fraga-', 'auto-', 'yta-'];
+  var SOURCE = { top: 'topp', end: 'slut', own_question: 'egen-fraga', about: 'om-oss' };
+  function activityPath(name, p) {
+    if (name === 'question_select') return (p.auto ? 'auto-' : 'fraga-') + p.question_id;
+    if (name === 'view_open') return 'yta-' + p.question_id;
+    if (name === 'booking_click') return 'boka-' + SOURCE[p.source];
+    return { own_question_open: 'egen-fraga', own_question_submit: 'egen-fraga-skickad', end_view: 'slut', contact_click: 'kontakt',
+      login_click: 'logga-in', about_open: 'om-oss', start_over: 'borja-om' }[name] || null;
+  }
+  function known(path) {
+    return ACTIVITY_PATHS.indexOf(path) >= 0 || ACTIVITY_PREFIXES.some(function (x) { return path.indexOf(x) === 0 && /^[a-z0-9]+$/.test(path.slice(x.length)); });
+  }
+  if (CF_LIVE) {
+    // En aktivitetsadress som laddas direkt börjar om på roten, innan besöket räknas.
+    if (window.location.pathname !== '/') { try { window.history.replaceState(null, '', '/'); } catch (e) { /* adressen står kvar */ } }
     var cf = document.createElement('script');
     cf.type = 'module'; cf.src = 'https://static.cloudflareinsights.com/beacon.min.js';
     cf.setAttribute('data-cf-beacon', JSON.stringify({ token: CF_TOKEN }));
     document.head.appendChild(cf);
   }
-  function track(name, params) { /* ingen mottagare, se ovan */ }
+  function track(name, params) {
+    if (!CF_LIVE) return;
+    var path = activityPath(name, params || {});
+    if (!path || !known(path)) return;
+    // Cloudflares skript räknar varje adressbyte där webbläsaren har Navigation API, annars bara pushState.
+    try {
+      if ('navigation' in window) window.history.replaceState(null, '', '/' + path);
+      else window.history.pushState(null, '', '/' + path);
+    } catch (e) { /* utan adressbyte räknas aktiviteten inte */ }
+  }
 
   function bookHref(q) {
     return q && BOOK.indexOf('mailto:') === 0 ? BOOK + '&body=' + encodeURIComponent('Min fråga till Lasse: ' + q + '\n\n') : BOOK;
