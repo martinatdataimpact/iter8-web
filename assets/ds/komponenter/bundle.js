@@ -322,16 +322,16 @@
       return 'i8-tt__cell--same';
     }
     function cellText(c) {
-      if (mode === 'Föreslagen') return [c.proposed, h('small', { key: 's' }, 's')];
-      if (mode === 'Nuvarande') return [c.current, h('small', { key: 's' }, 's')];
-      if (mode === 'Antal turer') return [c.n, h('small', { key: 's' }, 'turer')];
+      if (mode === 'Föreslagen') return c.proposed;
+      if (mode === 'Nuvarande') return c.current;
+      if (mode === 'Antal turer') return c.n;
       var s = c.diff > 0 ? '+' : c.diff < 0 ? '−' : '±';
-      return [s + Math.abs(c.diff), h('small', { key: 's' }, 's')];
+      return s + Math.abs(c.diff);
     }
     return h('div', { className: cx('i8', props.className) },
       props.showModes !== false && h('div', { className: 'i8-tt__mode', role: 'group', 'aria-label': 'Cellläge' }, modes.map(function (m) { return h('button', { key: m, 'aria-pressed': m === mode ? 'true' : 'false', onClick: function () { props.onMode && props.onMode(m); } }, m); })),
       h('table', { className: 'i8-tt' },
-        h('thead', null, h('tr', null, h('th', null, props.rowLabel || 'Delsträcka'), slots.map(function (s, i) { return h('th', { key: s, className: 'slot' }, s, h('small', null, slotHours[i])); }))),
+        h('thead', null, h('tr', null, h('th', null, props.rowLabel || 'Delsträcka', h('small', null, mode === 'Antal turer' ? 'turer' : (props.unit || 'sekunder'))), slots.map(function (s, i) { return h('th', { key: s, className: 'slot' }, s, h('small', null, slotHours[i])); }))),
         h('tbody', null, props.rows.map(function (r) {
           return h('tr', { key: r.label }, h('td', null, r.label), r.cells.map(function (c, i) {
             return h('td', { key: i }, h('div', { className: cx('i8-tt__cell', cellClass(c)), title: 'Nuvarande ' + c.current + ' s · föreslagen ' + c.proposed + ' s · ' + c.n + ' turer' }, cellText(c)));
@@ -390,7 +390,7 @@
         h('h2', { className: 'i8-cta__title' }, props.title || 'Er data väntar redan på er.'),
         props.text && h('p', { className: 'i8-cta__text' }, props.text),
         h('div', { className: 'i8-cta__form', style: { marginTop: 24 } },
-          h(Field, { label: 'Jobbmejl', placeholder: 'fornamn@skanetrafiken.se', type: 'email', style: { width: 320 } }),
+          h(Field, { label: 'Jobbmejl', placeholder: 'fornamn@organisation.se', type: 'email', style: { width: 320 } }),
           h(Button, { variant: 'accent', icon: 'arrow-right' }, props.cta || 'Logga in'))));
   }
 

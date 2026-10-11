@@ -28,11 +28,13 @@
 .i8-field { display: flex; flex-direction: column; gap: var(--space-2); min-width: 0; }
 .i8-field__label { font: 600 13px/16px var(--font-sans); letter-spacing: .01em; color: var(--ink); }
 .i8-field__label small { font-weight: 400; color: var(--ink-muted); margin-left: var(--space-1); }
-.i8-field__control { display: flex; align-items: center; height: 40px; padding: 0 var(--space-3); background: var(--surface-paper); border: var(--line-hair) solid var(--line-strong); border-radius: var(--radius-md); color: var(--ink); font: 400 15px/22px var(--font-sans); transition: border-color var(--duration-fast), box-shadow var(--duration-fast); }
+.i8-field__control { position: relative; display: flex; align-items: center; height: 40px; padding: 0 var(--space-3); background: var(--surface-paper); border: var(--line-hair) solid var(--line-strong); border-radius: var(--radius-md); color: var(--ink); font: 400 15px/22px var(--font-sans); transition: border-color var(--duration-fast), box-shadow var(--duration-fast); }
 .i8-field__control:focus-within { border-color: var(--sage-strong); box-shadow: 0 0 0 1px var(--sage-strong); }
 .i8-field__control input, .i8-field__control select { flex: 1; min-width: 0; border: 0; background: transparent; color: inherit; font: inherit; outline: none; padding: 0; appearance: none; -webkit-appearance: none; }
 .i8-field__control input::placeholder { color: var(--ink-muted); opacity: .8; }
 .i8-field__control svg { width: 18px; height: 18px; stroke: var(--ink-muted); fill: none; stroke-width: 1.5; margin-right: var(--space-2); }
+.i8-field__control select { align-self: stretch; margin: 0 calc(var(--space-3) * -1); padding: 0 calc(var(--space-3) * 2 + 18px) 0 var(--space-3); text-overflow: ellipsis; cursor: pointer; }
+.i8-field__control select + svg { position: absolute; right: var(--space-3); margin: 0; pointer-events: none; }
 .i8-field--error .i8-field__control { border-color: var(--brick); }
 .i8-field__hint { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); }
 .i8-field--error .i8-field__hint { color: var(--brick); }
@@ -164,15 +166,14 @@
 .i8-msg__actions { display: flex; gap: var(--space-2); }
 
 /* ---------- TimetableGrid ---------- */
-.i8-tt { border-collapse: separate; border-spacing: 0; background: var(--surface-paper); border: var(--line-hair) solid var(--line); border-radius: var(--radius-lg); overflow: hidden; font: 500 15px/22px var(--font-sans); font-variant-numeric: tabular-nums; }
-.i8-tt th { font: 600 13px/16px var(--font-sans); letter-spacing: .01em; text-align: left; padding: var(--space-2) var(--space-3); background: var(--surface-raised); border-bottom: var(--line-hair) solid var(--line-strong); white-space: nowrap; }
+.i8-tt { border-collapse: separate; border-spacing: 0; background: var(--surface-paper); border: var(--line-hair) solid var(--line); border-radius: var(--radius-lg); overflow: hidden; font: 500 13px/18px var(--font-sans); font-variant-numeric: tabular-nums; }
+.i8-tt th { font: 600 13px/16px var(--font-sans); letter-spacing: .01em; text-align: left; padding: var(--space-1) var(--space-2); background: var(--surface-raised); border-bottom: var(--line-hair) solid var(--line-strong); white-space: nowrap; }
 .i8-tt th.slot { text-align: center; }
-.i8-tt th.slot small { display: block; font: 400 11px/14px var(--font-sans); color: var(--ink-muted); }
+.i8-tt th small { display: block; font: 400 11px/14px var(--font-sans); color: var(--ink-muted); }
 .i8-tt td { padding: 0; border-bottom: var(--line-hair) solid var(--line); border-left: var(--line-hair) solid var(--line); }
-.i8-tt td:first-child { border-left: 0; padding: var(--space-2) var(--space-3); font: 400 15px/22px var(--font-sans); white-space: nowrap; }
+.i8-tt td:first-child { border-left: 0; padding: var(--space-1) var(--space-2); font: 400 13px/18px var(--font-sans); white-space: nowrap; }
 .i8-tt tr:last-child td { border-bottom: 0; }
-.i8-tt__cell { display: flex; align-items: baseline; justify-content: flex-end; gap: var(--space-1); min-width: 88px; padding: var(--space-2) var(--space-3); }
-.i8-tt__cell small { font: 500 12px/16px var(--font-sans); font-variant-numeric: tabular-nums; }
+.i8-tt__cell { display: flex; align-items: baseline; justify-content: flex-end; min-width: 56px; padding: var(--space-1) var(--space-2); }
 .i8-tt__cell--more { background: var(--brick-soft); color: var(--brick); }
 .i8-tt__cell--less { background: var(--sage-soft); color: var(--sage-strong); }
 .i8-tt__cell--same { color: var(--ink); }
