@@ -423,7 +423,8 @@
           h('div', { className: 'about__foot' },
             h('img', { className: 'top__symbol--light', src: 'assets/ds/logotyp/iter8-symbol-liggande-navy.svg', alt: 'iter8', height: 20 }),
             h('img', { className: 'top__symbol--dark', src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8', height: 20 }),
-            h('p', null, 'iter8 AB · org.nr 559591-9423 · ', h('a', { href: 'mailto:lasse@iter8.se' }, 'lasse@iter8.se'))))));
+            h('p', null, 'iter8 AB · org.nr 559591-9423 · ', h('a', { href: 'mailto:lasse@iter8.se' }, 'lasse@iter8.se'),
+              ' · ', h('a', { href: 'https://www.linkedin.com/company/iter-8/', target: '_blank', rel: 'noopener' }, 'LinkedIn'))))));
   }
 
   /* ── Avdelaren mellan samtalet och ytan, som i appen: dra, piltangenter, dubbelklick återställer ── */
