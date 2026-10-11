@@ -49,21 +49,18 @@
        about_open          Om oss öppnas                      source (footer | end)
        start_over          ”Börja om”                         answers
      Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click.
-     Adresserna: fraga (en vald fråga, vilken som helst) · fraga-auto (ställd av sidan själv) ·
-     yta · egen-fraga · egen-fraga-skickad · slut · boka-<källa> · kontakt · logga-in · om-oss ·
-     borja-om. answer_complete och view_close räknas inte. */
+     Tre händelser räknas, under var sin adress; de andra passerar track() utan att räknas:
+       fraga   besökaren valde själv en fråga (question_select, inte den sidan ställer själv)
+       slut    slutet visas (end_view)
+       boka    ”Boka en visning”, var knappen än satt (booking_click) */
   var CF_TOKEN = '239e5105f0a742e29bc77d133e828df9';  // iter8.se:s token i Cloudflare Web Analytics. Tomt = ingen mätning någonstans.
   var CF_HOSTS = /^(www\.)?iter8\.se$/;
   var CF_LIVE = !!CF_TOKEN && CF_HOSTS.test(window.location.hostname);
   // deploy-live.sh läser raden nedan: en sida per adress. track() byter bara till en adress som står här.
-  var ACTIVITY_PATHS = ['fraga', 'fraga-auto', 'yta', 'egen-fraga', 'egen-fraga-skickad', 'slut', 'boka-topp', 'boka-slut', 'boka-egen-fraga', 'boka-om-oss', 'kontakt', 'logga-in', 'om-oss', 'borja-om'];
-  var SOURCE = { top: 'topp', end: 'slut', own_question: 'egen-fraga', about: 'om-oss' };
+  var ACTIVITY_PATHS = ['fraga', 'slut', 'boka'];
   function activityPath(name, p) {
-    if (name === 'question_select') return p.auto ? 'fraga-auto' : 'fraga';
-    if (name === 'view_open') return 'yta';
-    if (name === 'booking_click') return 'boka-' + SOURCE[p.source];
-    return { own_question_open: 'egen-fraga', own_question_submit: 'egen-fraga-skickad', end_view: 'slut', contact_click: 'kontakt',
-      login_click: 'logga-in', about_open: 'om-oss', start_over: 'borja-om' }[name] || null;
+    if (name === 'question_select') return p.auto ? null : 'fraga';
+    return { end_view: 'slut', booking_click: 'boka' }[name] || null;
   }
   if (CF_LIVE) {
     // En aktivitetsadress som laddas direkt börjar om på roten, innan besöket räknas.
