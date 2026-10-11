@@ -23,12 +23,14 @@
   var STEP_MS = 700;           // ett arbetssteg
   var START = 'Hur kommer vi igång?';
 
-  /* ── Mätning (Google Analytics 4) ────────────────────────────────────────────────────
-     gtag laddas och händelserna nedan skickas BARA på den skarpa sajten (GA_HOSTS); lokalt
-     laddas ingenting och track() gör ingenting. Samtycket står
-     som nekat (ingen samtyckesruta på sidan): GA sätter inga kakor och mäter utan att känna
-     igen besökaren. grantAnalytics() finns för den dag sidan får ett samtyckesval.
-     Det som mäts är vad besökaren gör på sidan – aldrig texten i en egen fråga.
+  /* ── Mätning (Cloudflare Web Analytics) ──────────────────────────────────────────────
+     Cloudflare räknar besöken: antal, sidvisningar, varifrån besökaren kom, land och enhet.
+     Inga kakor sätts, ingenting lagras i webbläsaren och ingen besökare känns igen, så sidan
+     har ingen samtyckesfråga. Skriptet laddas BARA på den skarpa sajten (CF_HOSTS); lokalt
+     laddas ingenting.
+
+     Cloudflare tar inte emot egna händelser. track() nedan är stället där sidans händelser
+     passerar, och de har ingen mottagare: track() gör ingenting. En mottagare kopplas in här.
 
      Händelserna (namn → när → parametrar):
        question_select     en fråga i trädet väljs            question_id, depth, auto (ställd av sidan själv)
@@ -43,22 +45,15 @@
        about_open          Om oss öppnas                      source (footer | end)
        start_over          ”Börja om”                         answers
      Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click. */
-  var GA_ID = 'G-JF92SKXM2K';  // iter8.se:s webbström. Tomt = ingen mätning någonstans.
-  var GA_HOSTS = /^(www\.)?iter8\.se$/;
-  if (!GA_HOSTS.test(window.location.hostname)) GA_ID = '';
-  function gtag() { window.dataLayer.push(arguments); }
-  if (GA_ID) {
-    window.dataLayer = window.dataLayer || [];
-    gtag('consent', 'default', { analytics_storage: 'denied', ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied' });
-    gtag('js', new Date());
-    gtag('config', GA_ID);
-    var ga = document.createElement('script');
-    ga.async = true; ga.src = 'https://www.googletagmanager.com/gtag/js?id=' + encodeURIComponent(GA_ID);
-    document.head.appendChild(ga);
+  var CF_TOKEN = '239e5105f0a742e29bc77d133e828df9';  // iter8.se:s token i Cloudflare Web Analytics. Tomt = ingen mätning någonstans.
+  var CF_HOSTS = /^(www\.)?iter8\.se$/;
+  if (CF_TOKEN && CF_HOSTS.test(window.location.hostname)) {
+    var cf = document.createElement('script');
+    cf.type = 'module'; cf.src = 'https://static.cloudflareinsights.com/beacon.min.js';
+    cf.setAttribute('data-cf-beacon', JSON.stringify({ token: CF_TOKEN }));
+    document.head.appendChild(cf);
   }
-  function track(name, params) { if (GA_ID) gtag('event', name, params || {}); }
-  // Anropas av ett samtyckesval, om sidan får ett: därefter får GA sätta sina kakor.
-  window.grantAnalytics = function () { if (GA_ID) gtag('consent', 'update', { analytics_storage: 'granted' }); };
+  function track(name, params) { /* ingen mottagare, se ovan */ }
 
   function bookHref(q) {
     return q && BOOK.indexOf('mailto:') === 0 ? BOOK + '&body=' + encodeURIComponent('Min fråga till Lasse: ' + q + '\n\n') : BOOK;
