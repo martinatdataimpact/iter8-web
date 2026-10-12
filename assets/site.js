@@ -438,7 +438,7 @@
             h('h2', { className: 'about__title', id: 'about-title' }, 'En analyskollega med ', h('em', null, 'kvalitetssäkrad'), ' data.'),
             h('p', null, 'Lasse kan närmast betraktas som en analyskollega med tillgång till kvalitetssäkrad data om framför allt kollektivtrafiken. Han är tillgänglig dygnet runt, året om, och svarar på dina frågor om trafiken inom några sekunder eller minuter. Han tar fram statistik, presenterar data i grafer, tabeller och interaktiva kartor, analyserar samband och tar fram rapporter.'),
             h('p', null, 'Lasse vet var människor bor och arbetar, var de betydelsefulla målpunkterna finns, hur kollektivtrafiken var planerad och hur den faktiskt har fungerat, vad gator och vägar heter, var det finns signalkorsningar och vilken hastighetsgräns som råder, restider med andra färdslag, hur vädret varit och vilka trafikmeddelanden som gått ut. I grunden är Lasse en stor, väl strukturerad och kvalitetsgranskad databas med ett AI-lager ovanpå som gör det enkelt att ställa frågor.'),
-            h('p', null, 'Lasse är ett fackverktyg för trafikplanering, inte en generell AI-assistent. Tjänsten bygger på öppen data och all data ligger inom EU. Den köps som en årlig prenumeration från iter8 AB.'),
+            h('p', null, 'Lasse är ett fackverktyg för trafikplanering, inte en generell AI-assistent. Den köps som en årlig prenumeration från iter8 AB.'),
             h('p', null, h('a', { href: BOOK }, 'Boka in ett möte'), ' för prisuppgifter.'))
           : h(Frag, null,
             h('h2', { className: 'about__title', id: 'about-title' }, 'Vårt mål är att få saker att hända i ', h('em', null, 'verkligheten'), '.'),
