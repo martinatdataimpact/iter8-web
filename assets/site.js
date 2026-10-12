@@ -16,6 +16,8 @@
      ställs in i kalendern). Det öppnas i en ruta på sidan. Adressen är schemats inbäddningsadress
      (Dela → Bädda in på webbplats). */
   var BOOK = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2dCYjpomaH7pvcBEw5VV6MGM3fPj4rlSp1hGjdbMZ2urgOaoK-dh-CQYD_VnUJyvvlOSBXT5Xk?gv=true';
+  // Tillfälligt på första sidan: mässan. Raden visas till och med mässans sista dag och försvinner sedan av sig själv.
+  var FAIR_ON = new Date() < new Date(2026, 9, 23);
   var BOOK_EMBEDS = BOOK.indexOf('https://calendar.google.com/calendar/appointments/') === 0;
   var LOGIN = 'https://app.iter8.se';
   var AUTOPLAY_MS = 30000;     // orörd landning: så länge väntar Lasse innan första frågan ställs av sig själv (0 = aldrig)
@@ -436,8 +438,8 @@
             h('h2', { className: 'about__title', id: 'about-title' }, 'En analyskollega med ', h('em', null, 'kvalitetssäkrad'), ' data.'),
             h('p', null, 'Lasse kan närmast betraktas som en analyskollega med tillgång till kvalitetssäkrad data om framför allt kollektivtrafiken. Han är tillgänglig dygnet runt, året om, och svarar på dina frågor om trafiken inom några sekunder eller minuter. Han tar fram statistik, presenterar data i grafer, tabeller och interaktiva kartor, analyserar samband och tar fram rapporter.'),
             h('p', null, 'Lasse vet var människor bor och arbetar, var de betydelsefulla målpunkterna finns, hur kollektivtrafiken var planerad och hur den faktiskt har fungerat, vad gator och vägar heter, var det finns signalkorsningar och vilken hastighetsgräns som råder, restider med andra färdslag, hur vädret varit och vilka trafikmeddelanden som gått ut. I grunden är Lasse en stor, väl strukturerad och kvalitetsgranskad databas med ett AI-lager ovanpå som gör det enkelt att ställa frågor.'),
-            h('p', null, 'Lasse är ett fackverktyg för trafikplanering, inte en generell AI-assistent. Tjänsten bygger på öppen data, hanterar inga personuppgifter och all data ligger inom EU. Den köps som en årlig prenumeration från iter8 AB.'),
-            h('p', null, h('a', { href: 'mailto:lasse@iter8.se' }, 'Kontakta oss'), ' för prisuppgifter.'))
+            h('p', null, 'Lasse är ett fackverktyg för trafikplanering, inte en generell AI-assistent. Tjänsten bygger på öppen data och all data ligger inom EU. Den köps som en årlig prenumeration från iter8 AB.'),
+            h('p', null, h('a', { href: BOOK }, 'Boka in ett möte'), ' för prisuppgifter.'))
           : h(Frag, null,
             h('h2', { className: 'about__title', id: 'about-title' }, 'Vårt mål är att få saker att hända i ', h('em', null, 'verkligheten'), '.'),
             h('p', null, 'Lasse gör data till beslut: han hittar problemet, föreslår åtgärden, tar fram underlaget och följer upp att det verkade.'),
@@ -594,8 +596,15 @@
     var askbox = h('div', { className: started ? 'composer' : 'composer composer--landing' },
       h(AskBox, { choices: choices, typed: typed, busy: busy, landing: !started, onPick: choose, onOwn: own }));
 
+    // Mässraden: överst på sidan tills samtalet börjar. I listen på en bred skärm, överst i samtalet på en smal.
+    function fair(where) {
+      return !started && FAIR_ON && h('p', { className: 'notice notice--' + where },
+        h('span', null, 'Vi är på Persontrafikmässan 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!'));
+    }
+
     var chat = h('section', { className: 'chat', 'aria-label': 'Samtal med Lasse' },
       h('div', { className: 'chat__scroll' }, h('div', { className: 'chat__col' },
+        fair('flow'),
         !started && h('div', { className: 'intro' }, h(I8.LasseMark, { size: 'lg' }), h(I8.Tagline, { prefix: TAGLINE, words: WORDS, hold: 2600 }),
           h('p', { className: 'intro__lead body-lg' }, 'Fråga Lasse och få svar på nästan vad som helst.')),
         !started && askbox,
@@ -612,6 +621,7 @@
     var cls = ['room', mapOpen && 'room--split', dragging && 'room--dragging'].filter(Boolean).join(' ');
 
     return h('div', { className: 'page' },
+      fair('bar'),
       h('header', { className: 'top' },
         h('span', { className: 'top__known' }, 'Redan kund?'),
         h(I8.Button, { variant: 'ghost', size: 'sm', href: LOGIN }, 'Logga in'),

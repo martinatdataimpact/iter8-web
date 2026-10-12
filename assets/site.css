@@ -6,7 +6,7 @@ html, body, #app { height: 100%; }
 html, body { overflow: hidden; overscroll-behavior: none; }
 body { margin: 0; background: var(--surface-app); color: var(--ink); font-family: var(--font-sans); }
 
-.page { position: relative; height: 100dvh; display: flex; flex-direction: column; --bar: 56px; --foot: 44px; }   /* --foot: marginalen i nederkant, där sidfoten står */
+.page { position: relative; height: 100dvh; display: flex; flex-direction: column; --bar: 56px; --foot: 52px; }   /* --foot: marginalen i nederkant, där sidfoten står */
 
 /* Toppraden: iter8:s symbol till vänster, inloggning och visning till höger. */
 .top { position: absolute; top: 0; right: var(--space-5); z-index: 2; height: var(--bar); display: flex; align-items: center; gap: var(--space-2); }
@@ -65,10 +65,19 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 
 /* Sidfoten: Om oss och Om Lasse, alltid längst ned, i marginalen under rummet. */
 .foot { position: absolute; left: 50%; bottom: 0; z-index: 1; transform: translateX(-50%); height: var(--foot); display: flex; align-items: center; gap: var(--space-1);
-  font: 400 14px/20px var(--font-sans); color: var(--ink-muted); white-space: nowrap; }
+  font: 400 16px/24px var(--font-sans); color: var(--ink-muted); white-space: nowrap; }
 .foot button { height: 100%; border: 0; background: none; padding: 0 var(--space-2); cursor: pointer; font: inherit; color: inherit; }
 .foot button:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .foot button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: var(--radius-sm); }
+
+/* Tillfälligt besked överst på första sidan (mässan): i listen på en bred skärm, överst i samtalet på en smal. */
+.notice { box-sizing: border-box; margin: 0; padding: 7px var(--space-4); border-radius: 999px; background: var(--ochre-soft);
+  font: 400 13px/18px var(--font-sans); color: var(--primary); }
+.notice--bar { position: absolute; top: calc((var(--bar) - 32px) / 2); left: 50%; z-index: 2; transform: translateX(-50%); display: flex; white-space: nowrap; }
+.notice--flow { display: none; align-self: flex-start; }
+@media (max-width: 1100px) { .notice--bar { display: none; } .notice--flow { display: flex; } }
+.notice a { color: inherit; white-space: nowrap; text-underline-offset: 3px; }
+@media (max-width: 600px) { .notice { border-radius: var(--radius-lg); } }
 
 /* Arbetsstegen, hopfällda till en rad när svaret står där. */
 .steps-done { align-self: flex-start; margin-bottom: var(--space-1); }
