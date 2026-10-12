@@ -46,7 +46,7 @@
        booking_click       ”Boka en visning”                  source (top | end | own_question), answers
        contact_click       mejladressen                       source
        login_click         ”Logga in”
-       about_open          Om oss öppnas                      source (footer | end)
+       about_open          Om oss eller Om Lasse öppnas       source (footer | end), sheet (oss | lasse)
        start_over          ”Börja om”                         answers
      Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click.
      Tre händelser räknas, under var sin adress; de andra passerar track() utan att räknas:
@@ -415,8 +415,10 @@
         h('div', { className: 'i8-end__foot i8-end__st i8-end__st6' }, h('img', { src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8' }))));
   }
 
-  /* ── Om oss: vad iter8 gör, grundarna och bolaget. Ett ark som kommer in från höger. ── */
+  /* ── Om oss (vad iter8 gör, grundarna och bolaget) och Om Lasse (vad tjänsten är). Ett ark som kommer in från höger;
+        p.sheet väljer vilket. ── */
   function About(p) {
+    var lasse = p.sheet === 'lasse';
     var closeRef = useRef(null);
     useEffect(function () {
       if (closeRef.current) closeRef.current.focus();
@@ -427,20 +429,27 @@
     return h('div', { className: 'about', onClick: function (e) { if (e.target === e.currentTarget) p.onClose(); } },
       h('div', { className: 'about__sheet', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'about-title' },
         h('div', { className: 'about__bar' },
-          h('span', { className: 'overline' }, 'Om iter8'),
+          h('span', { className: 'overline' }, lasse ? 'Om Lasse' : 'Om iter8'),
           h('button', { ref: closeRef, type: 'button', className: 'i8 i8-btn i8-btn--ghost i8-btn--sm', onClick: p.onClose }, 'Stäng')),
         h('div', { className: 'about__body' },
-          h('h2', { className: 'about__title', id: 'about-title' }, 'Vårt mål är att få saker att hända i ', h('em', null, 'verkligheten'), '.'),
-          h('p', null, 'Lasse gör data till beslut: han hittar problemet, föreslår åtgärden, tar fram underlaget och följer upp att det verkade.'),
-          h('ul', { className: 'about__points' },
-            h('li', null, h('b', null, 'Begripligt.'), ' Rådata blir kartor, tabeller och svar du förstår direkt.'),
-            h('li', null, h('b', null, 'Agerbart.'), ' Vi stannar inte vid diagram. Lasse föreslår vad ni kan göra, och var det gör störst skillnad.'),
-            h('li', null, h('b', null, 'I framkant.'), ' Vi bygger vidare hela tiden. Ni får den nyaste tekniken utan att byta system.')),
-          h('p', { className: 'about__loop' }, 'Namnet ', h('em', null, 'iter8'), ' har två rötter. Iter är latin för väg. Iterate är att upprepa: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
-          h('p', { className: 'about__loop' }, 'Och ', h('em', null, 'Lasse'), ' då? Det var AI:ns första förslag på en rutinerad chaufför. 🤷'),
-          h('h3', { className: 'about__h' }, 'Grundarna'),
-          h('p', null, 'Eva-Marie Wenehed och Martin Bergström har byggt och drivit analysverktyg för svensk kollektivtrafik sedan 2019, hos regioner, städer, operatörer och akademi i hela landet. iter8 grundades 2026.'),
-          h('p', null, 'Produkten har formats tillsammans med en referensgrupp av ett 30-tal branschkollegor från ett 10-tal organisationer.'),
+          lasse ? h(Frag, null,
+            h('h2', { className: 'about__title', id: 'about-title' }, 'En analyskollega med ', h('em', null, 'kvalitetssäkrad'), ' data.'),
+            h('p', null, 'Lasse kan närmast betraktas som en analyskollega med tillgång till kvalitetssäkrad data om framför allt kollektivtrafiken. Han är tillgänglig dygnet runt, året om, och svarar på dina frågor om trafiken inom några sekunder eller minuter. Han tar fram statistik, presenterar data i grafer, tabeller och interaktiva kartor, analyserar samband och tar fram rapporter.'),
+            h('p', null, 'Lasse vet var människor bor och arbetar, var de betydelsefulla målpunkterna finns, hur kollektivtrafiken var planerad och hur den faktiskt har fungerat, vad gator och vägar heter, var det finns signalkorsningar och vilken hastighetsgräns som råder, restider med andra färdslag, hur vädret varit och vilka trafikmeddelanden som gått ut. I grunden är Lasse en stor, väl strukturerad och kvalitetsgranskad databas med ett AI-lager ovanpå som gör det enkelt att ställa frågor.'),
+            h('p', null, 'Lasse är ett fackverktyg för trafikplanering, inte en generell AI-assistent. Tjänsten bygger på öppen data, hanterar inga personuppgifter och all data ligger inom EU. Den köps som en årlig prenumeration från iter8 AB.'),
+            h('p', null, h('a', { href: 'mailto:lasse@iter8.se' }, 'Kontakta oss'), ' för prisuppgifter.'))
+          : h(Frag, null,
+            h('h2', { className: 'about__title', id: 'about-title' }, 'Vårt mål är att få saker att hända i ', h('em', null, 'verkligheten'), '.'),
+            h('p', null, 'Lasse gör data till beslut: han hittar problemet, föreslår åtgärden, tar fram underlaget och följer upp att det verkade.'),
+            h('ul', { className: 'about__points' },
+              h('li', null, h('b', null, 'Begripligt.'), ' Rådata blir kartor, tabeller och svar du förstår direkt.'),
+              h('li', null, h('b', null, 'Agerbart.'), ' Vi stannar inte vid diagram. Lasse föreslår vad ni kan göra, och var det gör störst skillnad.'),
+              h('li', null, h('b', null, 'I framkant.'), ' Vi bygger vidare hela tiden. Ni får den nyaste tekniken utan att byta system.')),
+            h('p', { className: 'about__loop' }, 'Namnet ', h('em', null, 'iter8'), ' har två rötter. Iter är latin för väg. Iterate är att upprepa: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
+            h('p', { className: 'about__loop' }, 'Och ', h('em', null, 'Lasse'), ' då? Det var AI:ns första förslag på en rutinerad chaufför. 🤷'),
+            h('h3', { className: 'about__h' }, 'Grundarna'),
+            h('p', null, 'Eva-Marie Wenehed och Martin Bergström har byggt och drivit analysverktyg för svensk kollektivtrafik sedan 2019, hos regioner, städer, operatörer och akademi i hela landet. iter8 grundades 2026.'),
+            h('p', null, 'Produkten har formats tillsammans med en referensgrupp av ett 30-tal branschkollegor från ett 10-tal organisationer.')),
           h('div', { className: 'about__foot' },
             h('img', { className: 'top__symbol--light', src: 'assets/ds/logotyp/iter8-symbol-liggande-navy.svg', alt: 'iter8', height: 20 }),
             h('img', { className: 'top__symbol--dark', src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8', height: 20 }),
@@ -488,7 +497,8 @@
     var vs = useState(null), viewId = vs[0], setViewId = vs[1];       // turen vars yta står bredvid samtalet
     var es = useState(null), ended = es[0], setEnded = es[1];         // null | 'end' | 'own'
     var bk = useState(false), booking = bk[0], setBooking = bk[1];
-    var ab = useState(false), about = ab[0], setAbout = ab[1];
+    var ab = useState(null), about = ab[0], setAbout = ab[1];   // arket från höger: null | 'oss' | 'lasse'
+    function openAbout(sheet, source) { track('about_open', { source: source, sheet: sheet }); setAbout(sheet); }
     var sp = useState(CHAT_SPLIT.initial), split = sp[0], setSplit = sp[1];           // samtalets andel bredvid ytan
     var dg = useState(false), dragging = dg[0], setDragging = dg[1];
     var roomRef = useRef(null);
@@ -623,10 +633,13 @@
             h(Blocks, { blocks: cv.blocks, label: cv.title })))),
 
       // Sidfoten: alltid längst ned, på varje vy.
-      h('button', { type: 'button', className: 'foot', onClick: function () { track('about_open', { source: 'footer' }); setAbout(true); } }, 'iter8 AB · Om oss'),
+      h('nav', { className: 'foot', 'aria-label': 'Om' },
+        h('button', { type: 'button', onClick: function () { openAbout('oss', 'footer'); } }, 'Om oss'),
+        h('span', { 'aria-hidden': 'true' }, '·'),
+        h('button', { type: 'button', onClick: function () { openAbout('lasse', 'footer'); } }, 'Om Lasse')),
 
       ended === 'end' && h(Frag, null,
-        h(End, { onAbout: function () { track('about_open', { source: 'end' }); setAbout(true); } }),
+        h(End, { onAbout: function () { openAbout('oss', 'end'); } }),
         h('button', { type: 'button', className: 'again', onClick: function () { setEnded(null); } }, 'Tillbaka')),
       // En egen fråga: inget svar här, men en väg till ett.
       ended === 'own' && h(Frag, null,
@@ -635,7 +648,7 @@
           text: '”' + ownQ.current + '”', before: false,
           mailText: 'Eller kontakta oss: ', logoSrc: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg' }),
         h('button', { type: 'button', className: 'again', onClick: function () { setEnded(null); } }, 'Tillbaka')),
-      about && h(About, { onClose: function () { setAbout(false); } }),
+      about && h(About, { key: about, sheet: about, onClose: function () { setAbout(null); } }),
       booking && h(Booking, { q: ownQ.current, onClose: function () { setBooking(false); } }));
   }
 
