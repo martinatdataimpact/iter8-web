@@ -38,11 +38,12 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
 .card { padding: var(--space-5); background: var(--surface-paper); border: var(--line-hair) solid var(--line); border-radius: var(--radius-lg); display: flex; flex-direction: column; gap: var(--space-2); }
 .card h3 { margin: 0; font: 600 17px/24px var(--font-sans); color: var(--primary); }
+.card__ico { color: var(--primary); margin-bottom: var(--space-2); }
 .card p { margin: 0; font-size: 15px; line-height: 23px; color: var(--ink-muted); }
 .knows { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-3); margin: 0; padding: 0; list-style: none; }
 .knows li { padding: var(--space-4); background: var(--surface-raised); border-radius: var(--radius-lg); font: 600 15px/21px var(--font-sans); color: var(--primary);
   display: flex; flex-direction: column; gap: var(--space-3); }
-.knows__ico { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.knows__ico, .card__ico { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Två spalter: rubrik till vänster, innehåll till höger. */
 .split { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: var(--space-7); align-items: start; }
