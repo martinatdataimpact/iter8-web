@@ -554,8 +554,8 @@
     var askbox = h('div', { className: started ? 'composer' : 'composer composer--landing' },
       h(AskBox, { choices: choices, typed: typed, busy: busy, landing: !started, onPick: choose, onOwn: own }));
 
-    // Raderna överst på första sidan tills samtalet börjar: senaste exemplet och mässan. På en bred skärm står de i
-    // listen efter menyn (exemplet först), annars överst i samtalet; mässan flyttar ned först, där listen blir för smal.
+    // Raderna överst på första sidan tills samtalet börjar: senaste exemplet och mässan. Bredvid varandra och centrerade:
+    // mitt i listen på en bred skärm (exemplet först), annars överst i samtalet. De flyttar ned tillsammans.
     function notices(where) {
       if (started || !(FAIR_ON || EXAMPLE)) return null;
       return h('div', { className: 'notices notices--' + where + (FAIR_ON ? ' has-fair' : '') },
@@ -566,7 +566,7 @@
             h('path', { d: 'M10 9H8' }), h('path', { d: 'M16 13H8' }), h('path', { d: 'M16 17H8' })),
           h('span', null, 'Nytt: ', h('b', null, EXAMPLE.title))),
         FAIR_ON && h('p', { className: 'notice notice--fair' },
-          h('span', null, 'Vi är på Persontrafikmässan 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!')));
+          h('span', null, 'Vi är på Persontrafik 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!')));
     }
 
     var chat = h('section', { className: 'chat', 'aria-label': 'Samtal med Lasse' },
