@@ -554,21 +554,19 @@
     var askbox = h('div', { className: started ? 'composer' : 'composer composer--landing' },
       h(AskBox, { choices: choices, typed: typed, busy: busy, landing: !started, onPick: choose, onOwn: own }));
 
-    // Raderna överst på sidan tills samtalet börjar. Mässan står i listen på en bred skärm (som förut) och överst
-    // i samtalet på en smal; exemplet står alltid överst i samtalet.
+    // Raderna överst på första sidan tills samtalet börjar: senaste exemplet och mässan. På en bred skärm står de i
+    // listen efter menyn (exemplet först), annars överst i samtalet; mässan flyttar ned först, där listen blir för smal.
     function notices(where) {
-      if (started) return null;
-      var fair = FAIR_ON && h('p', { className: 'notice notice--fair' },
-        h('span', null, 'Vi är på Persontrafikmässan 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!'));
-      if (where === 'bar') return fair && h('div', { className: 'notices notices--bar' }, fair);
-      if (!fair && !EXAMPLE) return null;
-      return h('div', { className: 'notices notices--flow' }, fair,
-        // Exemplet är en annan sak än mässan: navy, med en dokumentikon (Lucide file-text).
+      if (started || !(FAIR_ON || EXAMPLE)) return null;
+      return h('div', { className: 'notices notices--' + where + (FAIR_ON ? ' has-fair' : '') },
+        // Exemplet är en annan sak än mässan: grönt, med en dokumentikon (Lucide file-text).
         EXAMPLE && h('a', { className: 'notice notice--doc', href: EXAMPLE.href },
           h('svg', { className: 'notice__ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' },
             h('path', { d: 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z' }), h('path', { d: 'M14 2v4a2 2 0 0 0 2 2h4' }),
             h('path', { d: 'M10 9H8' }), h('path', { d: 'M16 13H8' }), h('path', { d: 'M16 17H8' })),
-          h('span', null, 'Nytt exempel: ', h('u', null, EXAMPLE.title))));
+          h('span', null, 'Nytt: ', h('b', null, EXAMPLE.title))),
+        FAIR_ON && h('p', { className: 'notice notice--fair' },
+          h('span', null, 'Vi är på Persontrafikmässan 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!')));
     }
 
     var chat = h('section', { className: 'chat', 'aria-label': 'Samtal med Lasse' },
@@ -590,7 +588,6 @@
     var cls = ['room', mapOpen && 'room--split', dragging && 'room--dragging'].filter(Boolean).join(' ');
 
     return h('div', { className: 'page' },
-      notices('bar'),
       h('header', { className: 'top' },
         h('span', { className: 'top__known' }, 'Redan kund?'),
         h(I8.Button, { variant: 'ghost', size: 'sm', href: LOGIN }, 'Logga in'),
@@ -606,6 +603,7 @@
             h('nav', { className: 'nav__links', 'aria-label': 'Meny' },
               h('a', { className: 'nav__link', href: '/om-lasse/' }, 'Om Lasse'),
               h('a', { className: 'nav__link', href: '/om-oss/' }, 'Om oss')),
+            notices('bar'),
             started && !narrow && h(I8.Button, { variant: 'ghost', size: 'sm', onClick: startOver }, 'Börja om')),
           chat),
         mapOpen ? h(Divider, { split: split, range: CHAT_SPLIT, label: 'Ändra bredden på samtalet och ytan', onChange: setSplit, onDragging: setDragging, room: roomRef })
