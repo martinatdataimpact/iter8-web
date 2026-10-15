@@ -1,0 +1,17 @@
+/* Sidhuvudet, gemensamt för startsidan och de riktiga sidorna (Om Lasse, Om oss, exemplen):
+   den liggande åttan och menyn till vänster, inloggning och visning till höger. */
+.nav__home { display: flex; align-items: center; border: 0; background: none; padding: 0; cursor: pointer; }
+.nav__home img { height: 12px; width: auto; margin-left: 11px; }
+.nav__home .top__symbol--dark, [data-theme=dark] .nav__home .top__symbol--light { display: none; }
+[data-theme=dark] .nav__home .top__symbol--dark { display: block; }
+.nav__links { display: flex; align-items: center; gap: var(--space-1); margin-left: var(--space-4); }
+.nav__link { display: inline-flex; align-items: center; height: 32px; padding: 0 var(--space-3); border-radius: var(--radius-md);
+  font: 500 14px/18px var(--font-sans); color: var(--ink); text-decoration: none; white-space: nowrap;
+  transition: background var(--duration-fast) ease; }
+.nav__link:hover { background: var(--surface-raised); }
+.nav__link:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.nav__link[aria-current=page] { color: var(--primary); font-weight: 600; box-shadow: inset 0 calc(-1 * var(--line-bold)) 0 var(--sage); border-radius: var(--radius-md) var(--radius-md) 0 0; }
+@media (max-width: 600px) {
+  .nav__links { margin-left: var(--space-2); gap: 0; }
+  .nav__link { padding: 0 var(--space-2); font-size: 13px; }
+}

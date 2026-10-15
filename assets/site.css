@@ -6,15 +6,11 @@ html, body, #app { height: 100%; }
 html, body { overflow: hidden; overscroll-behavior: none; }
 body { margin: 0; background: var(--surface-app); color: var(--ink); font-family: var(--font-sans); }
 
-.page { position: relative; height: 100dvh; display: flex; flex-direction: column; --bar: 56px; --foot: 52px; }   /* --foot: marginalen i nederkant, där sidfoten står */
+.page { position: relative; height: 100dvh; display: flex; flex-direction: column; --bar: 56px; --foot: var(--space-5); }   /* --foot: marginalen i nederkant */
 
-/* Toppraden: iter8:s symbol till vänster, inloggning och visning till höger. */
+/* Toppraden: åttan och menyn till vänster (assets/sidhuvud.css), inloggning och visning till höger. */
 .top { position: absolute; top: 0; right: var(--space-5); z-index: 2; height: var(--bar); display: flex; align-items: center; gap: var(--space-2); }
 .top__known { font: 400 13px/18px var(--font-sans); color: var(--ink-muted); margin-right: calc(-1 * var(--space-1)); }
-.top__home { display: flex; align-items: center; gap: 10px; border: 0; background: none; padding: 0; font: inherit; color: inherit; cursor: pointer; }
-.top__symbol { height: 12px; width: auto; margin-left: 11px; }
-.top__symbol--dark, [data-theme=dark] .top__symbol--light { display: none; }
-[data-theme=dark] .top__symbol--dark { display: block; }
 
 /* Rummet: samtalet, och ytan som glider in när svaret behöver den (5/12 och 7/12). */
 .room { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1fr) 0 minmax(0, 0fr);
@@ -63,20 +59,20 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .composer--landing { padding-top: var(--space-6); }
 .i8-composer textarea:focus-visible { outline: none; }
 
-/* Sidfoten: Om oss och Om Lasse, alltid längst ned, i marginalen under rummet. */
-.foot { position: absolute; left: 50%; bottom: 0; z-index: 1; transform: translateX(-50%); height: var(--foot); display: flex; align-items: center; gap: var(--space-1);
-  font: 400 16px/24px var(--font-sans); color: var(--ink-muted); white-space: nowrap; }
-.foot button { height: 100%; border: 0; background: none; padding: 0 var(--space-2); cursor: pointer; font: inherit; color: inherit; }
-.foot button:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
-.foot button:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; border-radius: var(--radius-sm); }
-
-/* Tillfälligt besked överst på första sidan (mässan): i listen på en bred skärm, överst i samtalet på en smal. */
+/* Raderna överst på första sidan: mässan i listen på en bred skärm och överst i samtalet på en smal; exemplet alltid överst i samtalet. */
+.notices { display: flex; gap: var(--space-2); }
+.notices--bar { position: absolute; top: calc((var(--bar) - 32px) / 2); left: 50%; z-index: 2; transform: translateX(-50%); white-space: nowrap; }
+.notices--flow { flex-direction: column; align-items: flex-start; }
+.notices--flow .notice--fair { display: none; }
+@media (max-width: 1100px) { .notices--bar { display: none; } .notices--flow .notice--fair { display: flex; } }
 .notice { box-sizing: border-box; margin: 0; padding: 7px var(--space-4); border-radius: 999px; background: var(--ochre-soft);
-  font: 400 13px/18px var(--font-sans); color: var(--primary); }
-.notice--bar { position: absolute; top: calc((var(--bar) - 32px) / 2); left: 50%; z-index: 2; transform: translateX(-50%); display: flex; white-space: nowrap; }
-.notice--flow { display: none; align-self: flex-start; }
-@media (max-width: 1100px) { .notice--bar { display: none; } .notice--flow { display: flex; } }
+  display: flex; font: 400 13px/18px var(--font-sans); color: var(--primary); }
 .notice a { color: inherit; white-space: nowrap; text-underline-offset: 3px; }
+.notice--doc { align-items: center; gap: var(--space-2); padding-left: var(--space-3); background: var(--primary); color: var(--on-primary); text-decoration: none; }
+.notice--doc u { font-weight: 600; text-underline-offset: 3px; }
+.notice--doc:hover { opacity: .9; }
+.notice--doc:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+.notice__ico { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 600px) { .notice { border-radius: var(--radius-lg); } }
 
 /* Arbetsstegen, hopfällda till en rad när svaret står där. */
@@ -224,7 +220,6 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .i8-end__text { display: flex; flex-direction: column; gap: var(--space-2); }
 .i8-end__text p { margin: 0; }
 .i8-end__mail + .i8-end__mail { margin-top: calc(-1 * var(--space-3)); }
-.end__about { border: 0; background: none; padding: 0; cursor: pointer; font: inherit; color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .vs { width: 100%; max-width: 640px; border-collapse: collapse; font: 400 15px/20px var(--font-sans); }
 .vs th, .vs td { padding: 7px 12px 7px 0; text-align: left; vertical-align: middle;
   border-bottom: var(--line-hair) solid color-mix(in srgb, var(--on-primary) 18%, transparent); }
@@ -251,32 +246,6 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 
 /* Sidan för en egen fråga: rubriken är en hel mening, så den sätts mindre än slutets. */
 .i8-end.own .i8-end__title { font-size: clamp(28px, 3.4vw, 44px); line-height: 1.12; max-width: 22ch; }
-
-/* Om oss: ett ark från höger, över sidan. */
-.about { position: fixed; inset: 0; z-index: 60; background: var(--overlay); display: flex; justify-content: flex-end; animation: about-fade 300ms ease both; }
-.about__sheet { width: min(520px, 100%); height: 100%; background: var(--surface-app); box-shadow: var(--shadow-overlay); display: flex; flex-direction: column;
-  animation: about-in 500ms cubic-bezier(.2,.7,.2,1) both; }
-.about__bar { display: flex; align-items: center; justify-content: space-between; padding: calc(14px + env(safe-area-inset-top, 0px)) 16px 14px 32px; border-bottom: var(--line-hair) solid var(--line); }
-.about__bar .overline { color: var(--ink-muted); }
-.about__body { flex: 1; overflow-y: auto; padding: 36px 32px calc(32px + env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; gap: 18px; }
-.about__body p, .about__body h2, .about__body h3 { margin: 0; }
-.about__body p, .about__points li { max-width: 60ch; font-size: 16px; line-height: 25px; }
-.about__title { font: 400 36px/1.12 var(--font-serif); color: var(--primary); }
-.about__title em { font-style: italic; color: var(--sage-strong); }
-.about__points { margin: 0; padding: 18px 0 0; list-style: none; display: flex; flex-direction: column; gap: 10px; border-top: var(--line-hair) solid var(--line); }
-.about__points b { font-weight: 600; color: var(--primary); }
-.about__loop { color: var(--ink-muted); }
-.about__h { font: 700 13px/16px var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); margin-top: 12px !important; padding-top: 18px; border-top: var(--line-hair) solid var(--line); }
-.about__foot { margin-top: auto; padding-top: 24px; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.about__foot img { height: 20px; width: auto; }
-.about__foot .top__symbol--dark, [data-theme=dark] .about__foot .top__symbol--light { display: none; }
-[data-theme=dark] .about__foot .top__symbol--dark { display: block; }
-.about__foot p { font-size: 13px; color: var(--ink-muted); }
-.about__foot a { color: inherit; }
-.about__body > p a { color: var(--primary); text-underline-offset: 3px; }
-@keyframes about-fade { from { opacity: 0; } }
-@keyframes about-in { from { transform: translateX(100%); } }
-@media (max-width: 600px) { .about__body { padding-inline: 20px; } .about__bar { padding-left: 20px; } .about__title { font-size: 30px; } }
 
 /* Bokningen: en ruta ovanpå sidan (och ovanpå slutet) med kalenderns bokningsschema. */
 .book { position: fixed; inset: 0; z-index: 60; display: flex; align-items: center; justify-content: center; padding: var(--space-5); background: var(--overlay); }
@@ -336,7 +305,6 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
   .kmap__area, .kmap__point { animation: none; opacity: 1; }
   .reach__bar i { animation: none; }
   .kmap__top, .again { animation: none; opacity: 1; }
-  .about, .about__sheet { animation: none; }
   .curtain { animation: curtain-fade 400ms ease 1800ms both; }
   .curtain__eight, .curtain__line { animation: none; }
 }

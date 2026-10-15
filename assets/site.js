@@ -18,6 +18,9 @@
   var BOOK = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2dCYjpomaH7pvcBEw5VV6MGM3fPj4rlSp1hGjdbMZ2urgOaoK-dh-CQYD_VnUJyvvlOSBXT5Xk?gv=true';
   // Tillfälligt på första sidan: mässan. Raden visas till och med mässans sista dag och försvinner sedan av sig själv.
   var FAIR_ON = new Date() < new Date(2026, 9, 23);
+  /* Senaste exemplet (ett åtgärdsunderlag på en egen sida, det som delas på LinkedIn). Det står som en rad
+     överst på första sidan, bredvid mässan; ett nytt exempel byter ut det här, null tar bort raden. Ingen fast meny. */
+  var EXAMPLE = { href: '/exempel/framkomlighet/', title: 'Framkomlighet i Region X' };
   var BOOK_EMBEDS = BOOK.indexOf('https://calendar.google.com/calendar/appointments/') === 0;
   var LOGIN = 'https://app.iter8.se';
   var AUTOPLAY_MS = 30000;     // orörd landning: så länge väntar Lasse innan första frågan ställs av sig själv (0 = aldrig)
@@ -48,7 +51,6 @@
        booking_click       ”Boka en visning”                  source (top | end | own_question), answers
        contact_click       mejladressen                       source
        login_click         ”Logga in”
-       about_open          Om oss eller Om Lasse öppnas       source (footer | end), sheet (oss | lasse)
        start_over          ”Börja om”                         answers
      Tratten: question_select (auto = false) → answer_complete → end_view / own_question_submit → booking_click.
      Tre händelser räknas, under var sin adress; de andra passerar track() utan att räknas:
@@ -413,50 +415,8 @@
             }))),
           h('div', { className: 'i8-end__actions i8-end__st i8-end__st5' }, h(I8.Button, { variant: 'accent', icon: 'arrow-right', href: BOOK }, 'Boka en visning')),
           h('p', { className: 'i8-end__mail i8-end__st i8-end__st6' }, 'Skriver ni hellre? ', h('a', { href: 'mailto:lasse@iter8.se' }, 'lasse@iter8.se')),
-          h('p', { className: 'i8-end__mail i8-end__st i8-end__st6' }, h('button', { type: 'button', className: 'end__about', onClick: p.onAbout }, 'Om oss'))),
+          h('p', { className: 'i8-end__mail i8-end__st i8-end__st6' }, h('a', { href: '/om-oss/' }, 'Om oss'))),
         h('div', { className: 'i8-end__foot i8-end__st i8-end__st6' }, h('img', { src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8' }))));
-  }
-
-  /* ── Om oss (vad iter8 gör, grundarna och bolaget) och Om Lasse (vad tjänsten är). Ett ark som kommer in från höger;
-        p.sheet väljer vilket. ── */
-  function About(p) {
-    var lasse = p.sheet === 'lasse';
-    var closeRef = useRef(null);
-    useEffect(function () {
-      if (closeRef.current) closeRef.current.focus();
-      function key(e) { if (e.key === 'Escape') p.onClose(); }
-      document.addEventListener('keydown', key);
-      return function () { document.removeEventListener('keydown', key); };
-    }, []);
-    return h('div', { className: 'about', onClick: function (e) { if (e.target === e.currentTarget) p.onClose(); } },
-      h('div', { className: 'about__sheet', role: 'dialog', 'aria-modal': 'true', 'aria-labelledby': 'about-title' },
-        h('div', { className: 'about__bar' },
-          h('span', { className: 'overline' }, lasse ? 'Om Lasse' : 'Om iter8'),
-          h('button', { ref: closeRef, type: 'button', className: 'i8 i8-btn i8-btn--ghost i8-btn--sm', onClick: p.onClose }, 'Stäng')),
-        h('div', { className: 'about__body' },
-          lasse ? h(Frag, null,
-            h('h2', { className: 'about__title', id: 'about-title' }, 'En analyskollega med ', h('em', null, 'kvalitetssäkrad'), ' data.'),
-            h('p', null, 'Lasse kan närmast betraktas som en analyskollega med tillgång till kvalitetssäkrad data om framför allt kollektivtrafiken. Han är tillgänglig dygnet runt, året om, och svarar på dina frågor om trafiken inom några sekunder eller minuter. Han tar fram statistik, presenterar data i grafer, tabeller och interaktiva kartor, analyserar samband och tar fram rapporter.'),
-            h('p', null, 'Lasse vet var människor bor och arbetar, var de betydelsefulla målpunkterna finns, hur kollektivtrafiken var planerad och hur den faktiskt har fungerat, vad gator och vägar heter, var det finns signalkorsningar och vilken hastighetsgräns som råder, restider med andra färdslag, hur vädret varit och vilka trafikmeddelanden som gått ut. I grunden är Lasse en stor, väl strukturerad och kvalitetsgranskad databas med ett AI-lager ovanpå som gör det enkelt att ställa frågor.'),
-            h('p', null, 'Lasse är ett fackverktyg för trafikplanering, inte en generell AI-assistent. Den köps som en årlig prenumeration från iter8 AB.'),
-            h('p', null, h('a', { href: BOOK }, 'Boka in ett möte'), ' för prisuppgifter.'))
-          : h(Frag, null,
-            h('h2', { className: 'about__title', id: 'about-title' }, 'Vårt mål är att få saker att hända i ', h('em', null, 'verkligheten'), '.'),
-            h('p', null, 'Lasse gör data till beslut: han hittar problemet, föreslår åtgärden, tar fram underlaget och följer upp att det verkade.'),
-            h('ul', { className: 'about__points' },
-              h('li', null, h('b', null, 'Begripligt.'), ' Rådata blir kartor, tabeller och svar du förstår direkt.'),
-              h('li', null, h('b', null, 'Agerbart.'), ' Vi stannar inte vid diagram. Lasse föreslår vad ni kan göra, och var det gör störst skillnad.'),
-              h('li', null, h('b', null, 'I framkant.'), ' Vi bygger vidare hela tiden. Ni får den nyaste tekniken utan att byta system.')),
-            h('p', { className: 'about__loop' }, 'Namnet ', h('em', null, 'iter8'), ' har två rötter. Iter är latin för väg. Iterate är att upprepa: data, insikt, åtgärd, mätning, och sedan om igen. Åttan i loggan ligger ner och blir en oändlighetsslinga, för det arbetet tar aldrig slut.'),
-            h('p', { className: 'about__loop' }, 'Och ', h('em', null, 'Lasse'), ' då? Det var AI:ns första förslag på en rutinerad chaufför. 🤷'),
-            h('h3', { className: 'about__h' }, 'Grundarna'),
-            h('p', null, 'Eva-Marie Wenehed och Martin Bergström har byggt och drivit analysverktyg för svensk kollektivtrafik sedan 2019, hos regioner, städer, operatörer och akademi i hela landet. iter8 grundades 2026.'),
-            h('p', null, 'Produkten har formats tillsammans med en referensgrupp av ett 30-tal branschkollegor från ett 10-tal organisationer.')),
-          h('div', { className: 'about__foot' },
-            h('img', { className: 'top__symbol--light', src: 'assets/ds/logotyp/iter8-symbol-liggande-navy.svg', alt: 'iter8', height: 20 }),
-            h('img', { className: 'top__symbol--dark', src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8', height: 20 }),
-            h('p', null, 'iter8 AB · org.nr 559591-9423 · ', h('a', { href: 'mailto:lasse@iter8.se' }, 'lasse@iter8.se'),
-              ' · ', h('a', { href: 'https://www.linkedin.com/company/iter-8/', target: '_blank', rel: 'noopener' }, 'LinkedIn'))))));
   }
 
   /* ── Avdelaren mellan samtalet och ytan, som i appen: dra, piltangenter, dubbelklick återställer ── */
@@ -499,8 +459,6 @@
     var vs = useState(null), viewId = vs[0], setViewId = vs[1];       // turen vars yta står bredvid samtalet
     var es = useState(null), ended = es[0], setEnded = es[1];         // null | 'end' | 'own'
     var bk = useState(false), booking = bk[0], setBooking = bk[1];
-    var ab = useState(null), about = ab[0], setAbout = ab[1];   // arket från höger: null | 'oss' | 'lasse'
-    function openAbout(sheet, source) { track('about_open', { source: source, sheet: sheet }); setAbout(sheet); }
     var sp = useState(CHAT_SPLIT.initial), split = sp[0], setSplit = sp[1];           // samtalets andel bredvid ytan
     var dg = useState(false), dragging = dg[0], setDragging = dg[1];
     var roomRef = useRef(null);
@@ -582,7 +540,7 @@
       function onClick(e) {
         var a = e.target.closest && e.target.closest('a[href]');
         if (!a) return;
-        var href = a.getAttribute('href'), source = a.closest('.i8-end.own') ? 'own_question' : a.closest('.i8-end') ? 'end' : a.closest('.about') ? 'about' : 'top';
+        var href = a.getAttribute('href'), source = a.closest('.i8-end.own') ? 'own_question' : a.closest('.i8-end') ? 'end' : 'top';
         if (href.indexOf(BOOK) === 0) {
           track('booking_click', { source: source, answers: seenRef.current });
           if (BOOK_EMBEDS) { e.preventDefault(); setBooking(true); }
@@ -596,15 +554,26 @@
     var askbox = h('div', { className: started ? 'composer' : 'composer composer--landing' },
       h(AskBox, { choices: choices, typed: typed, busy: busy, landing: !started, onPick: choose, onOwn: own }));
 
-    // Mässraden: överst på sidan tills samtalet börjar. I listen på en bred skärm, överst i samtalet på en smal.
-    function fair(where) {
-      return !started && FAIR_ON && h('p', { className: 'notice notice--' + where },
+    // Raderna överst på sidan tills samtalet börjar. Mässan står i listen på en bred skärm (som förut) och överst
+    // i samtalet på en smal; exemplet står alltid överst i samtalet.
+    function notices(where) {
+      if (started) return null;
+      var fair = FAIR_ON && h('p', { className: 'notice notice--fair' },
         h('span', null, 'Vi är på Persontrafikmässan 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!'));
+      if (where === 'bar') return fair && h('div', { className: 'notices notices--bar' }, fair);
+      if (!fair && !EXAMPLE) return null;
+      return h('div', { className: 'notices notices--flow' }, fair,
+        // Exemplet är en annan sak än mässan: navy, med en dokumentikon (Lucide file-text).
+        EXAMPLE && h('a', { className: 'notice notice--doc', href: EXAMPLE.href },
+          h('svg', { className: 'notice__ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' },
+            h('path', { d: 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z' }), h('path', { d: 'M14 2v4a2 2 0 0 0 2 2h4' }),
+            h('path', { d: 'M10 9H8' }), h('path', { d: 'M16 13H8' }), h('path', { d: 'M16 17H8' })),
+          h('span', null, 'Nytt exempel: ', h('u', null, EXAMPLE.title))));
     }
 
     var chat = h('section', { className: 'chat', 'aria-label': 'Samtal med Lasse' },
       h('div', { className: 'chat__scroll' }, h('div', { className: 'chat__col' },
-        fair('flow'),
+        notices('flow'),
         !started && h('div', { className: 'intro' }, h(I8.LasseMark, { size: 'lg' }), h(I8.Tagline, { prefix: TAGLINE, words: WORDS, hold: 2600 }),
           h('p', { className: 'intro__lead body-lg' }, 'Fråga Lasse och få svar på nästan vad som helst.')),
         !started && askbox,
@@ -621,7 +590,7 @@
     var cls = ['room', mapOpen && 'room--split', dragging && 'room--dragging'].filter(Boolean).join(' ');
 
     return h('div', { className: 'page' },
-      fair('bar'),
+      notices('bar'),
       h('header', { className: 'top' },
         h('span', { className: 'top__known' }, 'Redan kund?'),
         h(I8.Button, { variant: 'ghost', size: 'sm', href: LOGIN }, 'Logga in'),
@@ -630,9 +599,13 @@
       h('main', { ref: roomRef, className: cls, style: columns ? { gridTemplateColumns: columns } : undefined },
         h('div', { className: 'leftcol' },
           h('div', { className: 'modebar' },
-            h('button', { type: 'button', className: 'top__home', title: 'Börja om', onClick: startOver },
-              h('img', { className: 'top__symbol top__symbol--light', src: 'assets/ds/logotyp/iter8-symbol-liggande-navy.svg', alt: 'iter8' }),
-              h('img', { className: 'top__symbol top__symbol--dark', src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8' })),
+            h('button', { type: 'button', className: 'nav__home', title: 'Börja om', onClick: startOver },
+              h('img', { className: 'top__symbol--light', src: 'assets/ds/logotyp/iter8-symbol-liggande-navy.svg', alt: 'iter8' }),
+              h('img', { className: 'top__symbol--dark', src: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg', alt: 'iter8' })),
+            // Menyn: riktiga sidor, samma sidhuvud som där (assets/sidhuvud.css).
+            h('nav', { className: 'nav__links', 'aria-label': 'Meny' },
+              h('a', { className: 'nav__link', href: '/om-lasse/' }, 'Om Lasse'),
+              h('a', { className: 'nav__link', href: '/om-oss/' }, 'Om oss')),
             started && !narrow && h(I8.Button, { variant: 'ghost', size: 'sm', onClick: startOver }, 'Börja om')),
           chat),
         mapOpen ? h(Divider, { split: split, range: CHAT_SPLIT, label: 'Ändra bredden på samtalet och ytan', onChange: setSplit, onDragging: setDragging, room: roomRef })
@@ -642,14 +615,8 @@
             h('p', { className: 'kmap__sub body-sm' }, cv.sub),
             h(Blocks, { blocks: cv.blocks, label: cv.title })))),
 
-      // Sidfoten: alltid längst ned, på varje vy.
-      h('nav', { className: 'foot', 'aria-label': 'Om' },
-        h('button', { type: 'button', onClick: function () { openAbout('oss', 'footer'); } }, 'Om oss'),
-        h('span', { 'aria-hidden': 'true' }, '·'),
-        h('button', { type: 'button', onClick: function () { openAbout('lasse', 'footer'); } }, 'Om Lasse')),
-
       ended === 'end' && h(Frag, null,
-        h(End, { onAbout: function () { openAbout('oss', 'end'); } }),
+        h(End),
         h('button', { type: 'button', className: 'again', onClick: function () { setEnded(null); } }, 'Tillbaka')),
       // En egen fråga: inget svar här, men en väg till ett.
       ended === 'own' && h(Frag, null,
@@ -658,7 +625,6 @@
           text: '”' + ownQ.current + '”', before: false,
           mailText: 'Eller kontakta oss: ', logoSrc: 'assets/ds/logotyp/iter8-symbol-liggande-beige.svg' }),
         h('button', { type: 'button', className: 'again', onClick: function () { setEnded(null); } }, 'Tillbaka')),
-      about && h(About, { key: about, sheet: about, onClose: function () { setAbout(null); } }),
       booking && h(Booking, { q: ownQ.current, onClose: function () { setBooking(false); } }));
   }
 
