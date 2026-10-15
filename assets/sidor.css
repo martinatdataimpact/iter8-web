@@ -68,6 +68,10 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .cmp th, .cmp td { padding: 10px 12px 10px 0; text-align: left; border-bottom: var(--line-hair) solid var(--line); }
 .cmp thead th { font: 700 11px/16px var(--font-sans); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
 .cmp tbody th { font-weight: 600; color: var(--primary); }
+.cmp tbody th { position: relative; padding-left: 32px; }
+.cmp__check { position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; border-radius: 50%; background: var(--sage); }
+.cmp__check::after { content: ""; position: absolute; left: 7px; top: 3.5px; width: 5px; height: 10px;
+  border: solid var(--on-sage); border-width: 0 2px 2px 0; transform: rotate(45deg); }
 .cmp td { color: var(--ink-muted); }
 
 /* Bandet längst ned: navy, en mening och en knapp. */
