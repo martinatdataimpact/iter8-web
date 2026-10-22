@@ -59,17 +59,11 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .composer--landing { padding-top: var(--space-6); }
 .i8-composer textarea:focus-visible { outline: none; }
 
-/* Raderna överst på första sidan (senaste exemplet, mässan): bredvid varandra, centrerade och på en rad var. Mitt i
-   listen på en bred skärm, annars överst i samtalet; de flyttar ned tillsammans. Brytpunkterna är satta så att raderna
-   mitt i listen inte når knapparna till höger. I samtalet får de hela sidans bredd, inte bara spaltens; först där
-   de inte ryms bredvid varandra står de under varandra, och på en mobil, där mässraden är bredare än skärmen, bryts den. */
+/* Raden överst på första sidan (senaste exemplet): centrerad, på en rad. Mitt i listen på en bred skärm, annars överst
+   i samtalet. Brytpunkten är satt så att raden mitt i listen inte når knapparna till höger. */
 .notices { display: flex; justify-content: center; gap: var(--space-2); }
 .notices--bar { position: absolute; top: 0; left: 50%; transform: translateX(-50%); height: var(--bar); align-items: center; }
 .notices--flow { display: none; flex-wrap: wrap; align-self: center; width: max-content; max-width: calc(100vw - 40px); }
-@media (max-width: 1429px) {
-  .notices--bar.has-fair { display: none; }
-  .notices--flow.has-fair { display: flex; }
-}
 @media (max-width: 979px) {
   .notices--bar { display: none; }
   .notices--flow { display: flex; }
@@ -83,7 +77,6 @@ body { margin: 0; background: var(--surface-app); color: var(--ink); font-family
 .notice--doc:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 .notice__ico { width: 16px; height: 16px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 @media (max-width: 600px) { .notice { border-radius: var(--radius-lg); } }
-@media (max-width: 499px) { .notice--fair { white-space: normal; text-align: center; } }
 
 /* Arbetsstegen, hopfällda till en rad när svaret står där. */
 .steps-done { align-self: flex-start; margin-bottom: var(--space-1); }

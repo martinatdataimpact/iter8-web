@@ -16,10 +16,8 @@
      ställs in i kalendern). Det öppnas i en ruta på sidan. Adressen är schemats inbäddningsadress
      (Dela → Bädda in på webbplats). */
   var BOOK = 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2dCYjpomaH7pvcBEw5VV6MGM3fPj4rlSp1hGjdbMZ2urgOaoK-dh-CQYD_VnUJyvvlOSBXT5Xk?gv=true';
-  // Tillfälligt på första sidan: mässan. Raden visas till och med mässans sista dag och försvinner sedan av sig själv.
-  var FAIR_ON = new Date() < new Date(2026, 9, 23);
   /* Senaste exemplet (ett åtgärdsunderlag på en egen sida, det som delas på LinkedIn). Det står som en rad
-     överst på första sidan, bredvid mässan; ett nytt exempel byter ut det här, null tar bort raden. Ingen fast meny. */
+     överst på första sidan; ett nytt exempel byter ut det här, null tar bort raden. Ingen fast meny. */
   var EXAMPLE = { href: '/exempel/framkomlighet/', title: 'Framkomlighet i Region X' };
   var BOOK_EMBEDS = BOOK.indexOf('https://calendar.google.com/calendar/appointments/') === 0;
   var LOGIN = 'https://app.iter8.se';
@@ -554,19 +552,17 @@
     var askbox = h('div', { className: started ? 'composer' : 'composer composer--landing' },
       h(AskBox, { choices: choices, typed: typed, busy: busy, landing: !started, onPick: choose, onOwn: own }));
 
-    // Raderna överst på första sidan tills samtalet börjar: senaste exemplet och mässan. Bredvid varandra och centrerade:
-    // mitt i listen på en bred skärm (exemplet först), annars överst i samtalet. De flyttar ned tillsammans.
+    // Raden överst på första sidan tills samtalet börjar: senaste exemplet. Centrerad: mitt i listen på en bred skärm,
+    // annars överst i samtalet.
     function notices(where) {
-      if (started || !(FAIR_ON || EXAMPLE)) return null;
-      return h('div', { className: 'notices notices--' + where + (FAIR_ON ? ' has-fair' : '') },
-        // Exemplet är en annan sak än mässan: grönt, med en dokumentikon (Lucide file-text).
+      if (started || !EXAMPLE) return null;
+      return h('div', { className: 'notices notices--' + where },
+        // Grönt, med en dokumentikon (Lucide file-text).
         EXAMPLE && h('a', { className: 'notice notice--doc', href: EXAMPLE.href },
           h('svg', { className: 'notice__ico', viewBox: '0 0 24 24', 'aria-hidden': 'true' },
             h('path', { d: 'M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z' }), h('path', { d: 'M14 2v4a2 2 0 0 0 2 2h4' }),
             h('path', { d: 'M10 9H8' }), h('path', { d: 'M16 13H8' }), h('path', { d: 'M16 17H8' })),
-          h('span', null, 'Nytt: ', h('b', null, EXAMPLE.title))),
-        FAIR_ON && h('p', { className: 'notice notice--fair' },
-          h('span', null, 'Vi är på Persontrafik 20–22 okt! Hör av er på ', h('a', { href: 'tel:+46707386881' }, '0707-38 68 81'), ' om ni vill ses!')));
+          h('span', null, 'Nytt: ', h('b', null, EXAMPLE.title))));
     }
 
     var chat = h('section', { className: 'chat', 'aria-label': 'Samtal med Lasse' },
